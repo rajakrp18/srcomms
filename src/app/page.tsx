@@ -69,37 +69,110 @@ export default async function Home() {
                <div>
                  <h3 className="cat-title">{cat.title}</h3>
                  <p className="cat-desc">{cat.desc}</p>
-                 <button className="btn-text" style={{marginTop: '10px'}}>SHOP NOW →</button>
+                 <a href="#smartphones" className="btn-text" style={{marginTop: '10px', display: 'inline-block'}}>SHOP NOW →</a>
                </div>
             </div>
           ))}
         </div>
       </section>
 
-      {/* Featured Products */}
-      <section className="products container" id="smartphones">
-        <h2 className="section-title">Featured Products</h2>
-        <div className="prod-grid">
-          {displayProducts.map((prod: any, i: number) => (
-            <div className="prod-card" key={i}>
-               {prod.badge && <span className="prod-badge">{prod.badge}</span>}
-               <div className="prod-img-placeholder" style={{ position: 'relative', overflow: 'hidden' }}>
-                 {prod.image ? (
-                   <Image src={urlFor(prod.image).url()} alt={prod.name} fill style={{ objectFit: 'cover' }} sizes="(max-width: 768px) 100vw, 33vw" />
-                 ) : (
-                   <span>[ {prod.name} Image ]</span>
-                 )}
-               </div>
-               <h3 className="prod-name">{prod.name}</h3>
-               <p className="prod-specs">{prod.specs}</p>
-               <div className="prod-price-row">
-                 <span className="prod-price">{prod.price}</span>
-                 <button className="prod-cart-btn">🛒</button>
-               </div>
-            </div>
-          ))}
-        </div>
-      </section>
+      {/* Brand Sections */}
+      <div id="smartphones">
+        {["Apple", "Samsung", "Vivo", "OnePlus", "Nothing", "Oppo", "Realme", "Xiaomi"].map((brandName) => {
+          let brandProducts = sanityProducts.filter((p: any) => p.brand === brandName);
+          
+          if (brandProducts.length === 0) {
+            const placeholders: any = {
+              "Apple": [
+                { name: "iPhone 16 Pro Max", specs: "256GB / 8GB RAM", price: "₹1,44,900", badge: "NEW" },
+                { name: "iPhone 16 Pro", specs: "256GB / 8GB RAM", price: "₹1,29,900" },
+                { name: "iPhone 16 Plus", specs: "128GB / 8GB RAM", price: "₹89,900" },
+                { name: "iPhone 16", specs: "128GB / 8GB RAM", price: "₹79,900" },
+                { name: "iPhone 15", specs: "128GB / 6GB RAM", price: "₹69,900", badge: "HOT" }
+              ],
+              "Samsung": [
+                { name: "Galaxy S24 Ultra", specs: "512GB / 12GB RAM", price: "₹1,29,999", badge: "HOT" },
+                { name: "Galaxy S24 Plus", specs: "256GB / 12GB RAM", price: "₹99,999" },
+                { name: "Galaxy S24", specs: "256GB / 8GB RAM", price: "₹79,999" },
+                { name: "Galaxy Z Fold 6", specs: "512GB / 12GB RAM", price: "₹1,64,999", badge: "NEW" },
+                { name: "Galaxy Z Flip 6", specs: "256GB / 8GB RAM", price: "₹1,09,999" }
+              ],
+              "Vivo": [
+                { name: "Vivo X100 Pro", specs: "512GB / 16GB RAM", price: "₹89,999", badge: "NEW" },
+                { name: "Vivo X100", specs: "256GB / 12GB RAM", price: "₹63,999" },
+                { name: "Vivo V30 Pro", specs: "512GB / 12GB RAM", price: "₹41,999" },
+                { name: "Vivo V30", specs: "256GB / 8GB RAM", price: "₹33,999" },
+                { name: "Vivo T3 5G", specs: "128GB / 8GB RAM", price: "₹19,999", badge: "HOT" }
+              ],
+              "OnePlus": [
+                { name: "OnePlus 12", specs: "512GB / 16GB RAM", price: "₹69,999", badge: "HOT" },
+                { name: "OnePlus 12R", specs: "256GB / 16GB RAM", price: "₹45,999" },
+                { name: "OnePlus Open", specs: "512GB / 16GB RAM", price: "₹1,39,999" },
+                { name: "OnePlus Nord 4", specs: "256GB / 12GB RAM", price: "₹32,999", badge: "NEW" },
+                { name: "OnePlus Nord CE4", specs: "256GB / 8GB RAM", price: "₹26,999" }
+              ],
+              "Nothing": [
+                { name: "Nothing Phone (2a) Plus", specs: "256GB / 12GB RAM", price: "₹29,999", badge: "NEW" },
+                { name: "Nothing Phone (2a)", specs: "128GB / 8GB RAM", price: "₹23,999" },
+                { name: "Nothing Phone (2)", specs: "256GB / 12GB RAM", price: "₹36,999", badge: "HOT" },
+                { name: "CMF Phone 1", specs: "128GB / 6GB RAM", price: "₹15,999" },
+                { name: "Nothing Phone (1)", specs: "256GB / 8GB RAM", price: "₹27,999" }
+              ],
+              "Oppo": [
+                { name: "Oppo Find N3 Flip", specs: "256GB / 12GB RAM", price: "₹94,999", badge: "NEW" },
+                { name: "Oppo Reno 11 Pro", specs: "256GB / 12GB RAM", price: "₹39,999" },
+                { name: "Oppo Reno 11", specs: "256GB / 8GB RAM", price: "₹29,999", badge: "HOT" },
+                { name: "Oppo F25 Pro", specs: "256GB / 8GB RAM", price: "₹25,999" },
+                { name: "Oppo A79 5G", specs: "128GB / 8GB RAM", price: "₹19,999" }
+              ],
+              "Realme": [
+                { name: "Realme GT 6", specs: "512GB / 16GB RAM", price: "₹44,999", badge: "NEW" },
+                { name: "Realme GT 6T", specs: "256GB / 8GB RAM", price: "₹32,999" },
+                { name: "Realme 12 Pro+", specs: "256GB / 12GB RAM", price: "₹31,999", badge: "HOT" },
+                { name: "Realme 12 Pro", specs: "256GB / 8GB RAM", price: "₹26,999" },
+                { name: "Realme P1 Pro", specs: "256GB / 8GB RAM", price: "₹21,999" }
+              ],
+              "Xiaomi": [
+                { name: "Xiaomi 14 Ultra", specs: "512GB / 16GB RAM", price: "₹99,999", badge: "NEW" },
+                { name: "Xiaomi 14", specs: "512GB / 12GB RAM", price: "₹69,999" },
+                { name: "Redmi Note 13 Pro+", specs: "512GB / 12GB RAM", price: "₹33,999", badge: "HOT" },
+                { name: "Redmi Note 13 Pro", specs: "256GB / 8GB RAM", price: "₹27,999" },
+                { name: "POCO X6 Pro", specs: "512GB / 12GB RAM", price: "₹28,999" }
+              ]
+            };
+            brandProducts = placeholders[brandName] || [];
+          }
+
+          return (
+            <section className="products container" key={brandName} style={{ paddingTop: '60px', paddingBottom: '20px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
+                <h2 className="section-title" style={{ marginBottom: 0, fontSize: '2.5rem' }}>{brandName} Smartphones</h2>
+                <a href="#contact" style={{ color: 'var(--primary)', fontWeight: 'bold' }}>Enquire Now →</a>
+              </div>
+              <div className="prod-grid">
+                {brandProducts.map((prod: any, i: number) => (
+                  <div className="prod-card" key={i}>
+                     {prod.badge && <span className="prod-badge">{prod.badge}</span>}
+                     <div className="prod-img-placeholder" style={{ position: 'relative', overflow: 'hidden' }}>
+                       {prod.image ? (
+                         <Image src={urlFor(prod.image).url()} alt={prod.name} fill style={{ objectFit: 'cover' }} sizes="(max-width: 768px) 100vw, 33vw" />
+                       ) : (
+                         <span style={{color: 'var(--text-light)'}}>[ {prod.name} Image ]</span>
+                       )}
+                     </div>
+                     <h3 className="prod-name">{prod.name}</h3>
+                     <p className="prod-specs">{prod.specs}</p>
+                     <div className="prod-price-row">
+                       <span className="prod-price">{prod.price}</span>
+                       <button className="prod-cart-btn">🛒</button>
+                     </div>
+                  </div>
+                ))}
+              </div>
+            </section>
+          );
+        })}
+      </div>
 
       {/* Promos */}
       <section className="promos container" id="deals">

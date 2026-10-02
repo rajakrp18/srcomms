@@ -1,7 +1,7 @@
 export default function Terms() {
   return (
     <div className="container" style={{ padding: '100px 20px', minHeight: '80vh', maxWidth: '900px' }}>
-      <div className="glass-panel" style={{ padding: '60px', position: 'relative', overflow: 'hidden', background: 'white' }}>
+      <div className="glass-panel" style={{ padding: '60px', position: 'relative', overflow: 'hidden' }}>
         <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '5px', background: 'linear-gradient(90deg, var(--primary), #a855f7)' }}></div>
         
         <h1 style={{ fontSize: '2.5rem', color: 'var(--text-main)', marginBottom: '10px', fontWeight: '900' }}>Terms & Conditions</h1>

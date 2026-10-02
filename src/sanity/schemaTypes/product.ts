@@ -54,5 +54,22 @@ export const productType = defineType({
         ],
       },
     }),
+    defineField({
+      name: 'brand',
+      title: 'Brand',
+      type: 'string',
+      options: {
+        list: [
+          {title: 'Apple', value: 'Apple'},
+          {title: 'Samsung', value: 'Samsung'},
+          {title: 'Vivo', value: 'Vivo'},
+          {title: 'OnePlus', value: 'OnePlus'},
+          {title: 'Nothing', value: 'Nothing'},
+          {title: 'Oppo', value: 'Oppo'},
+          {title: 'Realme', value: 'Realme'},
+          {title: 'Xiaomi', value: 'Xiaomi'},
+        ],
+      },
+    }),
   ],
 })

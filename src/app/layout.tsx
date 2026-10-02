@@ -44,10 +44,10 @@ export default function RootLayout({
           <div className="container">
             <a href="/" className="logo">SR <span>Communication</span></a>
             <div className="nav-links">
-              <a href="#smartphones">Smartphones</a>
-              <a href="#categories">Accessories</a>
-              <a href="#deals">Deals</a>
-              <a href="#contact" className="nav-contact-btn">Contact</a>
+              <a href="/#smartphones">Smartphones</a>
+              <a href="/#categories">Accessories</a>
+              <a href="/#deals">Deals</a>
+              <a href="/contact" className="nav-contact-btn">Contact</a>
             </div>
             <NavIcons />
           </div>
