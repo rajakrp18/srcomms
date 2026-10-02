@@ -16,7 +16,7 @@ export default function RootLayout({
     <html lang="en">
       <body>
         <div className="top-banner">
-          BEST SMARTPHONE DEALS IN SHALIMAR GARDEN <span className="top-banner-btn">VISIT US TODAY! →</span>
+          BEST SMARTPHONE DEALS IN SHALIMAR GARDEN <a href="/contact" className="top-banner-btn">VISIT US TODAY! →</a>
         </div>
         
         <div className="info-bar">

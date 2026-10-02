@@ -1,6 +1,8 @@
 import { client } from "@/sanity/lib/client";
 import { urlFor } from "@/sanity/lib/image";
 import Image from "next/image";
+import Link from "next/link";
+import { MiniAddToCartButton } from "@/components/InteractiveElements";
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -154,11 +156,11 @@ export default async function Home() {
               </div>
               <div className="prod-grid">
                 {brandProducts.map((prod: any, i: number) => (
-                  <div className="prod-card" key={i}>
+                  <Link href={`/product/${prod.slug?.current || '#'}`} className="prod-card" key={i} style={{ display: 'block', color: 'inherit' }}>
                      {prod.badge && <span className="prod-badge">{prod.badge}</span>}
                      <div className="prod-img-placeholder" style={{ position: 'relative', overflow: 'hidden', width: '100%', height: '220px' }}>
                        {prod.image ? (
-                         <Image src={urlFor(prod.image).url()} alt={prod.name} fill style={{ objectFit: 'cover' }} sizes="(max-width: 768px) 100vw, 33vw" />
+                         <Image src={urlFor(prod.image).url()} alt={prod.name} fill style={{ objectFit: 'contain' }} sizes="(max-width: 768px) 100vw, 33vw" />
                        ) : (
                          <span style={{color: 'var(--text-light)'}}>[ {prod.name} Image ]</span>
                        )}
@@ -167,9 +169,9 @@ export default async function Home() {
                      <p className="prod-specs">{prod.specs}</p>
                      <div className="prod-price-row">
                        <span className="prod-price">{prod.price}</span>
-                       <button className="prod-cart-btn">🛒</button>
+                       <MiniAddToCartButton />
                      </div>
-                  </div>
+                  </Link>
                 ))}
               </div>
             </section>
