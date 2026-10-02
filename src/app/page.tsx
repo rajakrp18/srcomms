@@ -2,13 +2,15 @@ import { client } from "@/sanity/lib/client";
 import { urlFor } from "@/sanity/lib/image";
 import Image from "next/image";
 
-export const dynamic = 'force-dynamic'; // Always fetch the latest products instantly
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+export const fetchCache = 'force-no-store';
 
 export default async function Home() {
   // Fetch products and categories from Sanity!
-  const sanityProducts = await client.fetch('*[_type == "product"] | order(_createdAt desc)[0...5]');
-  const sanityCategories = await client.fetch('*[_type == "category"] | order(_createdAt asc)');
-  const sanityPromos = await client.fetch('*[_type == "promo"] | order(_createdAt asc)');
+  const sanityProducts = await client.fetch('*[_type == "product" && defined(_id)] | order(_createdAt desc)[0...100]', {}, { next: { revalidate: 0 } });
+  const sanityCategories = await client.fetch('*[_type == "category"] | order(_createdAt asc)', {}, { next: { revalidate: 0 } });
+  const sanityPromos = await client.fetch('*[_type == "promo"] | order(_createdAt asc)', {}, { next: { revalidate: 0 } });
 
   // Fallback to placeholders if they haven't uploaded anything yet
   const displayProducts = sanityProducts.length > 0 ? sanityProducts : [
@@ -81,6 +83,7 @@ export default async function Home() {
         {["Apple", "Samsung", "Vivo", "OnePlus", "Nothing", "Oppo", "Realme", "Xiaomi"].map((brandName) => {
           let brandProducts = sanityProducts.filter((p: any) => p.brand === brandName);
           
+          console.log(`Brand ${brandName} has ${brandProducts.length} products`);
           if (brandProducts.length === 0) {
             const placeholders: any = {
               "Apple": [
@@ -153,7 +156,7 @@ export default async function Home() {
                 {brandProducts.map((prod: any, i: number) => (
                   <div className="prod-card" key={i}>
                      {prod.badge && <span className="prod-badge">{prod.badge}</span>}
-                     <div className="prod-img-placeholder" style={{ position: 'relative', overflow: 'hidden' }}>
+                     <div className="prod-img-placeholder" style={{ position: 'relative', overflow: 'hidden', width: '100%', height: '220px' }}>
                        {prod.image ? (
                          <Image src={urlFor(prod.image).url()} alt={prod.name} fill style={{ objectFit: 'cover' }} sizes="(max-width: 768px) 100vw, 33vw" />
                        ) : (
