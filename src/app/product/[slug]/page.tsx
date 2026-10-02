@@ -23,11 +23,11 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
         <Link href="/" style={{ color: 'var(--primary)', fontWeight: 600 }}>← Back to Store</Link>
       </div>
       
-      <div style={{ display: 'flex', gap: '50px', flexWrap: 'wrap', alignItems: 'center' }}>
+      <div className="product-layout">
         {/* Product Image Gallery */}
-        <div style={{ flex: '1 1 400px', background: 'white', padding: '40px', borderRadius: '24px', boxShadow: 'var(--glass-shadow)', border: '1px solid var(--glass-border)', display: 'flex', justifyContent: 'center' }}>
+        <div className="product-image-container">
           {product.image ? (
-            <div style={{ position: 'relative', width: '100%', height: '400px' }}>
+            <div style={{ position: 'relative', width: '100%', height: '100%', minHeight: '300px' }}>
               <Image 
                 src={urlFor(product.image).url()} 
                 alt={product.name} 
@@ -37,12 +37,12 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
               />
             </div>
           ) : (
-            <div style={{ height: '400px', display: 'flex', alignItems: 'center', color: 'var(--text-light)' }}>No Image Available</div>
+            <div style={{ height: '300px', display: 'flex', alignItems: 'center', color: 'var(--text-light)' }}>No Image Available</div>
           )}
         </div>
 
         {/* Product Info */}
-        <div style={{ flex: '1 1 400px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
+        <div className="product-info-container">
           {product.badge && (
             <span style={{ alignSelf: 'flex-start', background: 'linear-gradient(135deg, var(--primary), #a855f7)', color: 'white', padding: '5px 12px', borderRadius: '20px', fontSize: '0.8rem', fontWeight: 800 }}>
               {product.badge}

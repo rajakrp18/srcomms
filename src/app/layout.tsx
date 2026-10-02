@@ -129,12 +129,12 @@ export default function RootLayout({
                 <NewsletterForm />
               </div>
             </div>
-            <div className="footer-bottom" style={{position: 'relative', alignItems: 'center'}}>
+            <div className="footer-bottom">
               <p>© 2026 SR Communication. All Rights Reserved.</p>
-              <div style={{position: 'absolute', left: '50%', transform: 'translateX(-50%)', color: '#9ca3af'}}>
+              <div className="footer-credit">
                 Developed by <a href="https://zewardesk.com" target="_blank" rel="noopener noreferrer" style={{color: '#a855f7', fontWeight: 'bold'}}>Team Zewardesk</a>
               </div>
-              <div style={{display: 'flex', gap: '20px'}}>
+              <div className="footer-links">
                 <a href="/terms">Terms & Conditions</a>
                 <a href="/privacy">Privacy Policy</a>
               </div>

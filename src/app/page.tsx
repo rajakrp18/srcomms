@@ -150,9 +150,9 @@ export default async function Home() {
 
           return (
             <section className="products container" key={brandName} style={{ paddingTop: '60px', paddingBottom: '20px' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
-                <h2 className="section-title" style={{ marginBottom: 0, fontSize: '2.5rem' }}>{brandName} Smartphones</h2>
-                <a href="#contact" style={{ color: 'var(--primary)', fontWeight: 'bold' }}>Enquire Now →</a>
+              <div className="brand-header">
+                <h2 className="section-title brand-title">{brandName} Smartphones</h2>
+                <a href="#contact" className="brand-enquire">Enquire Now →</a>
               </div>
               <div className="prod-grid">
                 {brandProducts.map((prod: any, i: number) => (
