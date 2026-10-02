@@ -45,9 +45,9 @@ export default async function Home() {
       <section className="hero">
         <div className="container hero-content">
           <div className="hero-text">
-            <span className="hero-subtitle">Latest Tech. Best Prices.</span>
+            <span className="hero-subtitle">SR Communication • Shalimar Garden</span>
             <h1 className="hero-title">Upgrade Your World</h1>
-            <p className="hero-desc">Discover the latest smartphones and accessories from top brands at unbeatable prices right here in Shalimar Garden.</p>
+            <p className="hero-desc">Discover the latest smartphones and accessories from top brands at unbeatable prices at SR Communication, the best mobile store right here in Shalimar Garden, Ghaziabad.</p>
             <div className="hero-buttons">
               <a href="#smartphones" className="btn btn-primary">SHOP NOW →</a>
               <a href="#deals" className="btn btn-outline">EXPLORE DEALS</a>

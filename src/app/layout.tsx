@@ -3,8 +3,17 @@ import "./globals.css";
 import { NavIcons, NewsletterForm } from "@/components/InteractiveElements";
 
 export const metadata: Metadata = {
-  title: "SR Communication | Best Mobile Store in Shalimar Garden",
-  description: "Your trusted mobile partner for Vivo, Nothing, Samsung, and more.",
+  title: "SR Communication | Best Mobile Store in Shalimar Garden, Ghaziabad",
+  description: "SR Communication is the top-rated mobile store in Shalimar Garden, Sahibabad. We offer the best deals on Apple, Samsung, Vivo, OnePlus, and more smartphones with 0% EMI and free gifts.",
+  keywords: ["SR Communication", "SR Communication Shalimar Garden", "Mobile store Shalimar Garden", "Buy smartphones Ghaziabad", "Best phone shop Sahibabad", "Mobile repair", "0% EMI phones", "SR Communication phone shop"],
+  openGraph: {
+    title: "SR Communication | Best Mobile Store in Shalimar Garden",
+    description: "Discover the latest smartphones and accessories from top brands at unbeatable prices right here in Shalimar Garden.",
+    url: 'https://srcommunication.com',
+    siteName: 'SR Communication',
+    locale: 'en_IN',
+    type: 'website',
+  },
 };
 
 export default function RootLayout({
@@ -12,8 +21,42 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "MobilePhoneStore",
+    "name": "SR Communication",
+    "image": "https://srcommunication.com/favicon.png",
+    "@id": "https://srcommunication.com",
+    "url": "https://srcommunication.com",
+    "telephone": "+919717459671",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Ug-1, S/14 Shalimar Garden Extension-2, Sahibabad",
+      "addressLocality": "Ghaziabad",
+      "postalCode": "201005",
+      "addressCountry": "IN"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": 28.6791,
+      "longitude": 77.3370
+    },
+    "openingHoursSpecification": {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+      "opens": "10:00",
+      "closes": "21:30"
+    } 
+  };
+
   return (
     <html lang="en">
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      </head>
       <body>
         <div className="top-banner">
           BEST SMARTPHONE DEALS IN SHALIMAR GARDEN <a href="/contact" className="top-banner-btn">VISIT US TODAY! →</a>

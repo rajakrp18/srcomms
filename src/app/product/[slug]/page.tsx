@@ -3,7 +3,20 @@ import { urlFor } from "@/sanity/lib/image";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import type { Metadata } from "next";
 import { AddToCartButton } from "@/components/InteractiveElements";
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const resolvedParams = await params;
+  const product = await client.fetch(`*[_type == "product" && slug.current == $slug][0]`, { slug: resolvedParams.slug });
+  
+  if (!product) return {};
+
+  return {
+    title: `${product.name} | SR Communication Shalimar Garden`,
+    description: `Buy ${product.name} at SR Communication in Shalimar Garden, Ghaziabad. ${product.specs || ''}. Best prices and 0% EMI available.`,
+  };
+}
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
