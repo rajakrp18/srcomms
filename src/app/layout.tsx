@@ -42,7 +42,10 @@ export default function RootLayout({
 
         <nav className="navbar">
           <div className="container">
-            <a href="/" className="logo">SR <span>Communication</span></a>
+            <a href="/" className="logo" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <img src="/favicon.png" alt="SR Logo" style={{ height: '35px', width: 'auto' }} />
+              <span><span style={{background: 'none', WebkitTextFillColor: 'black', color: 'black'}}>SR</span> <span>Communication</span></span>
+            </a>
             <div className="nav-links">
               <a href="/#smartphones">Smartphones</a>
               <a href="/#categories">Accessories</a>
