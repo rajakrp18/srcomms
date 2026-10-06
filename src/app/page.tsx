@@ -3,6 +3,13 @@ import { urlFor } from "@/sanity/lib/image";
 import Image from "next/image";
 import Link from "next/link";
 import { MiniAddToCartButton } from "@/components/InteractiveElements";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Top Selling Smartphones 2026 | SR Communication",
+  description: "Discover the top 5 selling smartphones of 2026 from Vivo, OnePlus, Nothing, Oppo, Realme, and Xiaomi. Buy the latest mobile phones in Shalimar Garden with 0% EMI.",
+  keywords: ["Top 5 smartphones 2026", "Best phones 2026", "Vivo", "OnePlus", "Nothing", "Oppo", "Realme", "Xiaomi", "buy phone on EMI", "Shalimar Garden mobile store"]
+};
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -45,18 +52,45 @@ export default async function Home() {
       <section className="hero">
         <div className="container hero-content">
           <div className="hero-text">
-            <span className="hero-subtitle">SR Communication • Shalimar Garden</span>
-            <h1 className="hero-title">Upgrade Your World</h1>
-            <p className="hero-desc">Discover the latest smartphones and accessories from top brands at unbeatable prices at SR Communication, the best mobile store right here in Shalimar Garden, Ghaziabad.</p>
+            <span className="hero-subtitle">SMARTPHONES • ACCESSORIES • DEALS</span>
+            <h1 className="hero-title">Upgrade Your<br/>World</h1>
+            <p className="hero-desc">Latest smartphones. Genuine products. Better deals. Right here in Shalimar Garden.</p>
             <div className="hero-buttons">
-              <a href="#smartphones" className="btn btn-primary">SHOP NOW →</a>
-              <a href="#deals" className="btn btn-outline">EXPLORE DEALS</a>
+              <a href="#smartphones" className="btn btn-primary">SHOP SMARTPHONES →</a>
+              <a href="#deals" className="btn btn-outline">VIEW DEALS</a>
             </div>
           </div>
           <div className="hero-image-area">
-             <div className="glass-panel" style={{width: '350px', height: '450px', position: 'relative', overflow: 'hidden'}}>
-                <Image src="/hero.png" alt="Premium Smartphones" fill style={{ objectFit: 'cover' }} priority sizes="(max-width: 768px) 100vw, 350px" />
+             <div className="hero-glow"></div>
+             <div className="hero-promo-badge">
+               <strong>0% DOWNPAYMENT</strong>
+               <span>Easy EMI available</span>
              </div>
+             <div className="hero-visual">
+                <Image src="/hero1.png" alt="Premium Smartphones" fill style={{ objectFit: 'cover' }} priority sizes="(max-width: 768px) 100vw, 500px" />
+             </div>
+          </div>
+        </div>
+        
+        {/* Trust Strip */}
+        <div className="container">
+          <div className="hero-trust-strip">
+            <div className="trust-item">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+              <span>100% Original</span>
+            </div>
+            <div className="trust-item">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line></svg>
+              <span>Easy EMI</span>
+            </div>
+            <div className="trust-item">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 12 20 22 4 22 4 12"></polyline><rect x="2" y="7" width="20" height="5"></rect><line x1="12" y1="22" x2="12" y2="7"></line><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"></path><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"></path></svg>
+              <span>Free Gifts</span>
+            </div>
+            <div className="trust-item">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg>
+              <span>15 Month Warranty</span>
+            </div>
           </div>
         </div>
       </section>
@@ -73,7 +107,7 @@ export default async function Home() {
                <div>
                  <h3 className="cat-title">{cat.title}</h3>
                  <p className="cat-desc">{cat.desc}</p>
-                 <a href="#smartphones" className="btn-text" style={{marginTop: '10px', display: 'inline-block'}}>SHOP NOW →</a>
+                 <a href={`#${cat.title.toLowerCase()}`} className="btn-text" style={{marginTop: '10px', display: 'inline-block'}}>SHOP NOW →</a>
                </div>
             </div>
           ))}
@@ -151,7 +185,9 @@ export default async function Home() {
           return (
             <section className="products container" key={brandName} style={{ paddingTop: '60px', paddingBottom: '20px' }}>
               <div className="brand-header">
-                <h2 className="section-title brand-title">{brandName} Smartphones</h2>
+                <h2 className="section-title brand-title">
+                  {["Apple", "Samsung"].includes(brandName) ? `${brandName} Smartphones` : `Top Selling ${brandName} Smartphones 2026`}
+                </h2>
                 <a href="#contact" className="brand-enquire">Enquire Now →</a>
               </div>
               <div className="prod-grid">
@@ -178,6 +214,74 @@ export default async function Home() {
           );
         })}
       </div>
+
+      {/* Other Categories Sections */}
+      {["Earbuds", "Smartwatches", "Accessories", "Tablets"].map((catName) => {
+        let catProducts = sanityProducts.filter((p: any) => p.category === catName);
+        
+        if (catProducts.length === 0) {
+          const placeholders: any = {
+            "Earbuds": [
+              { name: "AirPods Pro (2nd Gen)", specs: "Active Noise Cancellation", price: "₹24,900", badge: "HOT" },
+              { name: "Galaxy Buds 2 Pro", specs: "24-bit Hi-Fi audio", price: "₹17,999" },
+              { name: "Sony WF-1000XM5", specs: "Industry Leading ANC", price: "₹24,990", badge: "NEW" },
+              { name: "Nothing Ear (2)", specs: "Personalised ANC", price: "₹9,999" },
+              { name: "OnePlus Buds Pro 2", specs: "Spatial Audio", price: "₹11,999" }
+            ],
+            "Smartwatches": [
+              { name: "Apple Watch Series 9", specs: "41mm / 45mm", price: "₹41,900", badge: "NEW" },
+              { name: "Galaxy Watch 6 Classic", specs: "43mm / 47mm", price: "₹36,999", badge: "HOT" },
+              { name: "Garmin Venu 3", specs: "GPS Smartwatch", price: "₹42,990" },
+              { name: "Amazfit GTR 4", specs: "Dual-band GPS", price: "₹16,999" },
+              { name: "NoiseFit Halo", specs: "AMOLED Display", price: "₹3,999" }
+            ],
+            "Accessories": [
+              { name: "Apple 20W USB-C Adapter", specs: "Fast Charging", price: "₹1,900", badge: "HOT" },
+              { name: "Samsung 25W Adapter", specs: "Super Fast Charging", price: "₹1,299" },
+              { name: "Spigen Liquid Air Case", specs: "For iPhone 15", price: "₹1,499" },
+              { name: "Anker 10000mAh Powerbank", specs: "20W PD", price: "₹2,499" },
+              { name: "Belkin MagSafe Charger", specs: "15W Wireless", price: "₹3,999", badge: "NEW" }
+            ],
+            "Tablets": [
+              { name: "iPad Pro 11-inch (M4)", specs: "256GB / Wi-Fi", price: "₹99,900", badge: "NEW" },
+              { name: "iPad Air (M2)", specs: "128GB / Wi-Fi", price: "₹59,900" },
+              { name: "Galaxy Tab S9 Ultra", specs: "256GB / Wi-Fi", price: "₹1,08,999", badge: "HOT" },
+              { name: "Galaxy Tab S9 FE", specs: "128GB / Wi-Fi", price: "₹36,999" },
+              { name: "OnePlus Pad", specs: "128GB / Wi-Fi", price: "₹37,999" }
+            ]
+          };
+          catProducts = placeholders[catName] || [];
+        }
+
+        return (
+          <section className="products container" id={catName.toLowerCase()} key={catName} style={{ paddingTop: '60px', paddingBottom: '20px' }}>
+            <div className="brand-header">
+              <h2 className="section-title brand-title">{catName}</h2>
+              <a href="#contact" className="brand-enquire">Enquire Now →</a>
+            </div>
+            <div className="prod-grid">
+              {catProducts.map((prod: any, i: number) => (
+                <Link href={`/product/${prod.slug?.current || '#'}`} className="prod-card" key={i} style={{ display: 'block', color: 'inherit' }}>
+                   {prod.badge && <span className="prod-badge">{prod.badge}</span>}
+                   <div className="prod-img-placeholder" style={{ position: 'relative', overflow: 'hidden', width: '100%', height: '220px' }}>
+                     {prod.image ? (
+                       <Image src={urlFor(prod.image).url()} alt={prod.name} fill style={{ objectFit: 'contain' }} sizes="(max-width: 768px) 100vw, 33vw" />
+                     ) : (
+                       <span style={{color: 'var(--text-light)'}}>[ {prod.name} Image ]</span>
+                     )}
+                   </div>
+                   <h3 className="prod-name">{prod.name}</h3>
+                   <p className="prod-specs">{prod.specs}</p>
+                   <div className="prod-price-row">
+                     <span className="prod-price">{prod.price}</span>
+                     <MiniAddToCartButton />
+                   </div>
+                </Link>
+              ))}
+            </div>
+          </section>
+        );
+      })}
 
       {/* Promos */}
       <section className="promos container" id="deals">
