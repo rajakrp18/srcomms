@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "update-catalog": "node scripts/update-catalog.mjs"
   },
   "dependencies": {
     "@sanity/icons": "^5.2.3",

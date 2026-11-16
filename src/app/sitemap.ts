@@ -1,19 +1,14 @@
 import { MetadataRoute } from 'next';
-import { client } from "@/sanity/lib/client";
+import { getAllProducts } from "@/data/products";
 
-export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = 'https://srcommunication.com'; // Replace with actual domain once deployed
+export default function sitemap(): MetadataRoute.Sitemap {
+  const baseUrl = 'https://srcommunication.com';
+  const products = getAllProducts();
 
-  // Fetch product slugs for sitemap
-  const products = await client.fetch(`*[_type == "product" && defined(slug.current)]{
-    "slug": slug.current,
-    _updatedAt
-  }`);
-
-  const productUrls = products.map((product: any) => ({
+  const productUrls = products.map((product) => ({
     url: `${baseUrl}/product/${product.slug}`,
-    lastModified: new Date(product._updatedAt),
-    changeFrequency: 'weekly',
+    lastModified: new Date(),
+    changeFrequency: 'weekly' as const,
     priority: 0.8,
   }));
 
@@ -32,6 +27,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
     {
       url: `${baseUrl}/about`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    {
+      url: `${baseUrl}/store`,
       lastModified: new Date(),
       changeFrequency: 'monthly',
       priority: 0.8,
