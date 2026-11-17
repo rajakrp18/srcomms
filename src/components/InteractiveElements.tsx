@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useEffect, useMemo } from 'react';
+import { createPortal } from 'react-dom';
 import Image from 'next/image';
 import Link from 'next/link';
 import { PRODUCTS, Product } from '@/data/products';
@@ -18,6 +19,25 @@ export interface CartItem {
 
 const STORE_WHATSAPP = "919717459671";
 const STORE_PHONE = "+91 9717459671";
+
+// Universal Client Portal to break out of all parent stacking contexts (sticky navbars, cards)
+function ClientPortal({ children, lockScroll = true }: { children: React.ReactNode; lockScroll?: boolean }) {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+    if (lockScroll) {
+      const prevOverflow = document.body.style.overflow;
+      document.body.style.overflow = 'hidden';
+      return () => {
+        document.body.style.overflow = prevOverflow;
+      };
+    }
+  }, [lockScroll]);
+
+  if (!mounted || typeof document === 'undefined') return null;
+  return createPortal(children, document.body);
+}
 
 // ==========================================
 // 1. NAVIGATION ICONS & DRAWER TRIGGERS
@@ -144,9 +164,10 @@ export function SearchModal({ isOpen, onClose }: { isOpen: boolean; onClose: () 
   if (!isOpen) return null;
 
   return (
-    <div className="modal-backdrop" onClick={onClose}>
-      <div className="search-modal-box" onClick={(e) => e.stopPropagation()}>
-        <div className="search-input-header">
+    <ClientPortal>
+      <div className="modal-backdrop" onClick={onClose}>
+        <div className="search-modal-box" onClick={(e) => e.stopPropagation()}>
+          <div className="search-input-header">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#4f46e5" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
             <circle cx="11" cy="11" r="8"></circle>
             <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
@@ -234,6 +255,7 @@ export function SearchModal({ isOpen, onClose }: { isOpen: boolean; onClose: () 
         </div>
       </div>
     </div>
+    </ClientPortal>
   );
 }
 
@@ -307,8 +329,9 @@ export function CartDrawer({ isOpen, onClose }: { isOpen: boolean; onClose: () =
   if (!isOpen) return null;
 
   return (
-    <div className="drawer-overlay" onClick={onClose}>
-      <div className="cart-drawer-panel" onClick={(e) => e.stopPropagation()}>
+    <ClientPortal>
+      <div className="drawer-overlay" onClick={onClose}>
+        <div className="cart-drawer-panel" onClick={(e) => e.stopPropagation()}>
         <div className="drawer-header">
           <div className="drawer-title-group">
             <h3>Your Shopping Cart</h3>
@@ -376,6 +399,7 @@ export function CartDrawer({ isOpen, onClose }: { isOpen: boolean; onClose: () =
         )}
       </div>
     </div>
+    </ClientPortal>
   );
 }
 
@@ -640,57 +664,59 @@ export function ProductGalleryViewer({ product }: { product: Product }) {
 
       {/* Lightbox Modal */}
       {isLightboxOpen && (
-        <div className="gallery-lightbox-overlay" onClick={() => setIsLightboxOpen(false)}>
-          <div className="lightbox-dialog" onClick={(e) => e.stopPropagation()}>
-            <div className="lightbox-top-bar">
-              <div className="lightbox-title-box">
-                <h4>{product.name}</h4>
-                <span>{getAngleLabel(activeIndex)} &bull; {activeIndex + 1} of {images.length}</span>
+        <ClientPortal>
+          <div className="gallery-lightbox-overlay" onClick={() => setIsLightboxOpen(false)}>
+            <div className="lightbox-dialog" onClick={(e) => e.stopPropagation()}>
+              <div className="lightbox-top-bar">
+                <div className="lightbox-title-box">
+                  <h4>{product.name}</h4>
+                  <span>{getAngleLabel(activeIndex)} &bull; {activeIndex + 1} of {images.length}</span>
+                </div>
+                <button
+                  type="button"
+                  className="lightbox-close-icon"
+                  onClick={() => setIsLightboxOpen(false)}
+                  aria-label="Close Preview"
+                >
+                  ✕
+                </button>
               </div>
-              <button
-                type="button"
-                className="lightbox-close-icon"
-                onClick={() => setIsLightboxOpen(false)}
-                aria-label="Close Preview"
-              >
-                ✕
-              </button>
-            </div>
 
-            <div className="lightbox-hero-display">
-              <Image
-                src={images[activeIndex]}
-                alt={`${product.name} - ${getAngleLabel(activeIndex)}`}
-                fill
-                style={{ objectFit: 'contain' }}
-                sizes="95vw"
-              />
-            </div>
-
-            {images.length > 1 && (
-              <div className="lightbox-thumb-strip">
-                {images.map((imgUrl, idx) => (
-                  <button
-                    key={idx}
-                    type="button"
-                    className={`lightbox-mini-thumb ${idx === activeIndex ? 'active' : ''}`}
-                    onClick={() => setActiveIndex(idx)}
-                  >
-                    <div style={{ position: 'relative', width: '50px', height: '40px' }}>
-                      <Image
-                        src={imgUrl}
-                        alt={`Angle ${idx + 1}`}
-                        fill
-                        style={{ objectFit: 'contain' }}
-                        sizes="50px"
-                      />
-                    </div>
-                  </button>
-                ))}
+              <div className="lightbox-hero-display">
+                <Image
+                  src={images[activeIndex]}
+                  alt={`${product.name} - ${getAngleLabel(activeIndex)}`}
+                  fill
+                  style={{ objectFit: 'contain' }}
+                  sizes="95vw"
+                />
               </div>
-            )}
+
+              {images.length > 1 && (
+                <div className="lightbox-thumb-strip">
+                  {images.map((imgUrl, idx) => (
+                    <button
+                      key={idx}
+                      type="button"
+                      className={`lightbox-mini-thumb ${idx === activeIndex ? 'active' : ''}`}
+                      onClick={() => setActiveIndex(idx)}
+                    >
+                      <div style={{ position: 'relative', width: '50px', height: '40px' }}>
+                        <Image
+                          src={imgUrl}
+                          alt={`Angle ${idx + 1}`}
+                          fill
+                          style={{ objectFit: 'contain' }}
+                          sizes="50px"
+                        />
+                      </div>
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
           </div>
-        </div>
+        </ClientPortal>
       )}
     </div>
   );
@@ -980,61 +1006,63 @@ export function CatalogSection({ initialProducts }: { initialProducts: Product[]
 
         {/* Quick View Modal */}
         {quickViewProduct && (
-          <div className="modal-backdrop" onClick={() => setQuickViewProduct(null)}>
-            <div className="quick-view-modal" onClick={(e) => e.stopPropagation()}>
-              <button className="modal-close-icon" onClick={() => setQuickViewProduct(null)}>✕</button>
-              
-              <div className="quick-view-grid">
-                <div className="quick-view-img-wrap">
-                  <Image
-                    src={quickViewProduct.image}
-                    alt={quickViewProduct.name}
-                    fill
-                    style={{ objectFit: 'contain' }}
-                  />
-                </div>
-
-                <div className="quick-view-info">
-                  <span className="brand-tag">{quickViewProduct.brand}</span>
-                  <h2>{quickViewProduct.name}</h2>
-                  <p className="quick-view-desc">{quickViewProduct.description}</p>
-
-                  <div className="quick-view-price-row">
-                    <span className="price-big">{quickViewProduct.formattedPrice}</span>
-                    {quickViewProduct.formattedOriginalPrice && (
-                      <span className="price-struck">{quickViewProduct.formattedOriginalPrice}</span>
-                    )}
-                    <span className="emi-pulse-badge">0% EMI from {quickViewProduct.emiStartsAt}</span>
+          <ClientPortal>
+            <div className="modal-backdrop" onClick={() => setQuickViewProduct(null)}>
+              <div className="quick-view-modal" onClick={(e) => e.stopPropagation()}>
+                <button className="modal-close-icon" onClick={() => setQuickViewProduct(null)}>✕</button>
+                
+                <div className="quick-view-grid">
+                  <div className="quick-view-img-wrap">
+                    <Image
+                      src={quickViewProduct.image}
+                      alt={quickViewProduct.name}
+                      fill
+                      style={{ objectFit: 'contain' }}
+                    />
                   </div>
 
-                  <div className="quick-view-specs-list">
-                    {quickViewProduct.specs.display && <div><strong>Display:</strong> {quickViewProduct.specs.display}</div>}
-                    {quickViewProduct.specs.processor && <div><strong>Processor:</strong> {quickViewProduct.specs.processor}</div>}
-                    {quickViewProduct.specs.camera && <div><strong>Camera:</strong> {quickViewProduct.specs.camera}</div>}
-                    {quickViewProduct.specs.battery && <div><strong>Battery:</strong> {quickViewProduct.specs.battery}</div>}
-                  </div>
+                  <div className="quick-view-info">
+                    <span className="brand-tag">{quickViewProduct.brand}</span>
+                    <h2>{quickViewProduct.name}</h2>
+                    <p className="quick-view-desc">{quickViewProduct.description}</p>
 
-                  <div className="quick-view-actions">
-                    <a
-                      href={`https://wa.me/${STORE_WHATSAPP}?text=${encodeURIComponent(`Hi SR Communication, I'm interested in buying *${quickViewProduct.name}* (${quickViewProduct.formattedPrice}).`)}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="btn btn-whatsapp-action"
-                    >
-                      💬 Order on WhatsApp
-                    </a>
-                    <Link
-                      href={`/product/${quickViewProduct.slug}`}
-                      className="btn btn-outline"
-                      onClick={() => setQuickViewProduct(null)}
-                    >
-                      View Full Details →
-                    </Link>
+                    <div className="quick-view-price-row">
+                      <span className="price-big">{quickViewProduct.formattedPrice}</span>
+                      {quickViewProduct.formattedOriginalPrice && (
+                        <span className="price-struck">{quickViewProduct.formattedOriginalPrice}</span>
+                      )}
+                      <span className="emi-pulse-badge">0% EMI from {quickViewProduct.emiStartsAt}</span>
+                    </div>
+
+                    <div className="quick-view-specs-list">
+                      {quickViewProduct.specs.display && <div><strong>Display:</strong> {quickViewProduct.specs.display}</div>}
+                      {quickViewProduct.specs.processor && <div><strong>Processor:</strong> {quickViewProduct.specs.processor}</div>}
+                      {quickViewProduct.specs.camera && <div><strong>Camera:</strong> {quickViewProduct.specs.camera}</div>}
+                      {quickViewProduct.specs.battery && <div><strong>Battery:</strong> {quickViewProduct.specs.battery}</div>}
+                    </div>
+
+                    <div className="quick-view-actions">
+                      <a
+                        href={`https://wa.me/${STORE_WHATSAPP}?text=${encodeURIComponent(`Hi SR Communication, I'm interested in buying *${quickViewProduct.name}* (${quickViewProduct.formattedPrice}).`)}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="btn btn-whatsapp-action"
+                      >
+                        💬 Order on WhatsApp
+                      </a>
+                      <Link
+                        href={`/product/${quickViewProduct.slug}`}
+                        className="btn btn-outline"
+                        onClick={() => setQuickViewProduct(null)}
+                      >
+                        View Full Details →
+                      </Link>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
+          </ClientPortal>
         )}
       </div>
     </section>
