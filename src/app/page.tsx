@@ -10,14 +10,14 @@ import {
 } from "@/components/InteractiveElements";
 
 export const metadata: Metadata = {
-  title: "SR Communication | Top Selling Smartphones & 0% EMI in Shalimar Garden",
-  description: "Explore the latest smartphones from Apple, Samsung, Vivo, OnePlus, Nothing, Oppo, Realme, and Xiaomi. 0% Downpayment EMI, genuine warranty, and instant store pickup in Shalimar Garden, Ghaziabad.",
+  title: "SR Communication | iPhone 17/18 & Galaxy S26/S27 with 0% EMI in Shalimar Garden",
+  description: "Explore the latest smartphones: iPhone 18 Pro Max, iPhone 17 Pro, Galaxy S27 Ultra, S26 Ultra, Vivo, OnePlus & Nothing. 0% Downpayment EMI, genuine warranty, and instant store pickup in Shalimar Garden, Ghaziabad.",
   keywords: [
     "SR Communication",
-    "Smartphones Shalimar Garden",
-    "iPhone 16 Pro Shalimar Garden",
-    "Samsung Galaxy S24 Ultra Ghaziabad",
-    "Vivo X100 Pro store",
+    "iPhone 18 Pro Max Shalimar Garden",
+    "iPhone 17 Pro Max Ghaziabad",
+    "Galaxy S27 Ultra",
+    "Galaxy S26 Ultra Sahibabad",
     "0% EMI phone store Sahibabad",
     "Best mobile shop Shalimar Garden"
   ]
@@ -26,8 +26,60 @@ export const metadata: Metadata = {
 export default function Home() {
   const products = getAllProducts();
 
+  const faqJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Where is SR Communication located in Shalimar Garden, Ghaziabad?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "SR Communication is situated at Ug-1, S/14 Shalimar Garden Extension-2, Sahibabad, Ghaziabad, UP 201005 (near S.M. Mall). The showroom is open 7 days a week from 10:00 AM to 9:30 PM with customer parking and live device demo counters."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I buy iPhone 18, iPhone 17 and Samsung Galaxy S27/S26 on 0% EMI?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes! SR Communication offers instant 0% downpayment paperless EMI approvals through Bajaj Finserv, IDFC First Bank, HDFC, and ICICI Bank. Walk in with your Aadhaar and PAN card, and walk out with your new smartphone in under 15 minutes."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Are smartphones at SR Communication brand sealed with official warranty?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes, 100%. Every smartphone sold at SR Communication is brand sealed in factory box with valid GST invoice and official 1-year manufacturer warranty recognized across all authorized service centers nationwide."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How does old phone trade-in & exchange bonus work at SR Communication?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Bring your working old phone to our showroom for instant diagnostic evaluation. We calculate maximum fair market value plus an additional exchange bonus that gets deducted on the spot from your new smartphone."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I check live prices or reserve a phone via WhatsApp?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. You can contact our direct sales desk anytime at +91 97174 59671 or click any WhatsApp button to verify real-time stock, color availability, or reserve a device for same-day store pickup."
+        }
+      }
+    ]
+  };
+
   return (
     <>
+      {/* FAQ Schema JSON-LD */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
       {/* 1. HERO SECTION */}
       <section className="hero-revamp">
         <div className="container hero-container-grid">
@@ -209,6 +261,63 @@ export default function Home() {
                 style={{ objectFit: 'contain' }}
                 sizes="(max-width: 768px) 100vw, 400px"
               />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 6.5. SEO FAQ SECTION */}
+      <section className="faq-section" id="faq">
+        <div className="container">
+          <div className="section-head-centered">
+            <span className="section-eyebrow">HELP &amp; SHOWROOM ANSWERS</span>
+            <h2 className="section-heading-revamped">Frequently Asked Questions</h2>
+            <p className="section-sub-desc">
+              Everything you need to know about buying the latest smartphones, 0% EMI financing, and store pickup at SR Communication in Shalimar Garden.
+            </p>
+          </div>
+
+          <div className="faq-grid">
+            <div className="faq-card">
+              <h3>Where is SR Communication located in Shalimar Garden?</h3>
+              <p>
+                SR Communication is situated at <strong>Ug-1, S/14 Shalimar Garden Extension-2, Sahibabad, Ghaziabad, UP 201005</strong> (near S.M. Mall). We are open all 7 days from 10:00 AM to 9:30 PM with dedicated customer parking and live device demo counters.
+              </p>
+            </div>
+
+            <div className="faq-card">
+              <h3>Can I buy iPhone 18, iPhone 17 and Galaxy S27/S26 on 0% EMI?</h3>
+              <p>
+                Yes! We offer <strong>0% Downpayment paperless EMI</strong> via Bajaj Finserv, IDFC First Bank, HDFC, and ICICI Bank. Walk in with your Aadhaar Card and PAN Card, and your approval takes under 15 minutes with flexible tenures from 3 to 24 months.
+              </p>
+            </div>
+
+            <div className="faq-card">
+              <h3>Are all phones sold 100% genuine with official brand warranty?</h3>
+              <p>
+                Absolutely. Every smartphone sold at SR Communication is brand sealed in factory box with valid GST invoice and official 1-year manufacturer warranty recognized across all authorized Apple, Samsung, Vivo, OnePlus, and Nothing service centers nationwide.
+              </p>
+            </div>
+
+            <div className="faq-card">
+              <h3>How does old phone trade-in &amp; exchange bonus work?</h3>
+              <p>
+                Bring your working old phone to our showroom for instant diagnostic evaluation. We calculate maximum fair market value plus an additional <strong>exchange bonus</strong> that gets deducted on the spot from your new smartphone purchase.
+              </p>
+            </div>
+
+            <div className="faq-card">
+              <h3>Do you offer free data transfer and accessories with new phones?</h3>
+              <p>
+                Yes! Our in-store tech team will safely migrate all your contacts, photos, WhatsApp chats, and apps from your old phone to your new phone completely free, along with complimentary tempered glass application and protective case.
+              </p>
+            </div>
+
+            <div className="faq-card">
+              <h3>Can I check live prices or reserve a phone via WhatsApp?</h3>
+              <p>
+                Yes. You can contact our direct sales desk anytime at <strong>+91 97174 59671</strong> or click any WhatsApp button to verify real-time stock, color options, or reserve a device for same-day store pickup.
+              </p>
             </div>
           </div>
         </div>

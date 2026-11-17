@@ -57,8 +57,8 @@ export const CATEGORIES: Category[] = [
 ];
 
 export const BRANDS = [
-  { name: "Apple", count: "5 Models", logo: "🍎" },
-  { name: "Samsung", count: "6 Models", logo: "⚡" },
+  { name: "Apple", count: "11 Models", logo: "🍎" },
+  { name: "Samsung", count: "12 Models", logo: "⚡" },
   { name: "Vivo", count: "4 Models", logo: "📸" },
   { name: "OnePlus", count: "3 Models", logo: "🔴" },
   { name: "Nothing", count: "4 Models", logo: "⚪" },

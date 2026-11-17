@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { getProductBySlug, getAllProducts, getProductsByBrand } from "@/data/products";
-import { ProductActions, ProductEmiWidget } from "@/components/InteractiveElements";
+import { ProductActions, ProductEmiWidget, ProductGalleryViewer } from "@/components/InteractiveElements";
 
 export async function generateStaticParams() {
   const products = getAllProducts();
@@ -18,19 +18,41 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
   if (!product) return { title: "Product Not Found | SR Communication" };
 
+  const canonicalUrl = `https://srcommunication.in/product/${product.slug}`;
+
   return {
-    title: `${product.name} | Best Price in Shalimar Garden | SR Communication`,
-    description: `Buy ${product.name} at SR Communication in Shalimar Garden, Ghaziabad. ${product.description} 0% Downpayment EMI, official warranty, best price.`,
+    title: `${product.name} (Best Price ${product.formattedPrice}) | 0% EMI at SR Communication Shalimar Garden`,
+    description: `Buy 100% genuine sealed ${product.name} at SR Communication, Shalimar Garden, Sahibabad. Best store price ${product.formattedPrice}, 0% Downpayment EMI from ${product.emiStartsAt}, official brand warranty, free case & tempered glass, instant showroom pickup.`,
     keywords: [
       product.name,
-      `${product.brand} smartphones`,
-      `Buy ${product.name} Shalimar Garden`,
-      "0% EMI phone",
-      "SR Communication"
+      `${product.name} price in Shalimar Garden`,
+      `Buy ${product.name} Ghaziabad`,
+      `Buy ${product.name} Sahibabad`,
+      `${product.name} 0% EMI`,
+      `${product.name} Bajaj Finserv EMI`,
+      `${product.brand} mobile shop Shalimar Garden`,
+      `${product.name} exchange offer`,
+      "SR Communication mobile store"
     ],
+    alternates: {
+      canonical: canonicalUrl,
+    },
     openGraph: {
-      title: `${product.name} - ${product.formattedPrice} | SR Communication`,
-      description: product.description,
+      title: `${product.name} - ${product.formattedPrice} | SR Communication Shalimar Garden`,
+      description: `Get ${product.name} with 0% Downpayment EMI and official warranty at SR Communication, Shalimar Garden.`,
+      url: canonicalUrl,
+      images: [
+        {
+          url: product.image,
+          alt: `${product.name} - SR Communication`,
+        }
+      ],
+      type: "article",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: `${product.name} | SR Communication Shalimar Garden`,
+      description: `Buy ${product.name} at ${product.formattedPrice} with 0% EMI in Shalimar Garden, Sahibabad.`,
       images: [product.image],
     }
   };
@@ -48,8 +70,83 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
     .filter((p) => p.slug !== product.slug)
     .slice(0, 4);
 
+  const productJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": product.name,
+    "image": product.gallery && product.gallery.length > 0 ? product.gallery.map(img => `https://srcommunication.in${img}`) : [`https://srcommunication.in${product.image}`],
+    "description": product.description,
+    "brand": {
+      "@type": "Brand",
+      "name": product.brand
+    },
+    "category": product.category,
+    "offers": {
+      "@type": "Offer",
+      "url": `https://srcommunication.in/product/${product.slug}`,
+      "priceCurrency": "INR",
+      "price": product.price,
+      "priceValidUntil": "2027-12-31",
+      "itemCondition": "https://schema.org/NewCondition",
+      "availability": product.inStock ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
+      "seller": {
+        "@type": "MobilePhoneStore",
+        "name": "SR Communication",
+        "telephone": "+919717459671",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "Ug-1, S/14 Shalimar Garden Ext-2",
+          "addressLocality": "Sahibabad, Ghaziabad",
+          "postalCode": "201005",
+          "addressCountry": "IN"
+        }
+      }
+    },
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": product.rating || 4.8,
+      "reviewCount": product.reviewsCount || 150,
+      "bestRating": "5",
+      "worstRating": "1"
+    }
+  };
+
+  const breadcrumbsJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      {
+        "@type": "ListItem",
+        "position": 1,
+        "name": "Home",
+        "item": "https://srcommunication.in"
+      },
+      {
+        "@type": "ListItem",
+        "position": 2,
+        "name": product.category,
+        "item": "https://srcommunication.in/#catalog"
+      },
+      {
+        "@type": "ListItem",
+        "position": 3,
+        "name": product.name,
+        "item": `https://srcommunication.in/product/${product.slug}`
+      }
+    ]
+  };
+
   return (
     <div className="product-page-container">
+      {/* Schema JSON-LD Scripts for Google Rich Snippets */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbsJsonLd) }}
+      />
       {/* Breadcrumb Navigation */}
       <div className="container" style={{ paddingTop: '24px', paddingBottom: '16px' }}>
         <nav className="breadcrumbs" aria-label="Breadcrumb">
@@ -65,22 +162,7 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
         <div className="product-details-grid">
           {/* Left Column: Visual Gallery */}
           <div className="product-gallery-card">
-            {product.badge && (
-              <span className={`badge-pill badge-${product.badge.toLowerCase().replace(/\s+/g, '-')}`}>
-                {product.badge}
-              </span>
-            )}
-            
-            <div className="main-product-image-wrap">
-              <Image
-                src={product.image}
-                alt={product.name}
-                fill
-                priority
-                style={{ objectFit: 'contain' }}
-                sizes="(max-width: 768px) 100vw, 550px"
-              />
-            </div>
+            <ProductGalleryViewer product={product} />
 
             {/* In-store Guarantee Perks */}
             <div className="store-perks-strip">
@@ -146,6 +228,9 @@ export default async function ProductPage({ params }: { params: Promise<{ slug: 
                 <span className="emi-pulse-badge">0% EMI</span>
                 <span>Easy EMI starts at <strong>{product.emiStartsAt}</strong></span>
               </div>
+              <p className="price-market-note">
+                * Online price is indicative. In-store showroom price may slightly vary based on daily market supply, brand revisions &amp; active card cashback.
+              </p>
             </div>
 
             {/* Colors */}

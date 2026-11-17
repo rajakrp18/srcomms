@@ -4,26 +4,78 @@ import { NavIcons, NewsletterForm } from "@/components/InteractiveElements";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://srcommunication.com'),
-  title: "SR Communication | Best Smartphone Store in Shalimar Garden, Ghaziabad",
-  description: "SR Communication is the premier mobile store in Shalimar Garden, Sahibabad. Best prices on Apple, Samsung, Vivo, OnePlus, Nothing & Xiaomi with 0% Downpayment EMI, genuine warranty, and instant pickup.",
+  metadataBase: new URL('https://srcommunication.in'),
+  title: {
+    default: "SR Communication | #1 Mobile Store & 0% EMI in Shalimar Garden, Ghaziabad",
+    template: "%s | SR Communication"
+  },
+  description: "SR Communication is Shalimar Garden & Sahibabad's #1 authorized store for Apple iPhone 18/17, Samsung Galaxy S27/S26, Vivo, OnePlus & Nothing. 0% Downpayment paperless EMI via Bajaj Finserv & IDFC, 100% genuine sealed warranty & instant store pickup.",
   keywords: [
     "SR Communication",
     "SR Communication Shalimar Garden",
-    "Mobile store Shalimar Garden",
-    "Buy smartphones Ghaziabad",
-    "Best phone shop Sahibabad",
-    "0% EMI phones",
-    "iPhone 16 Pro Max Shalimar Garden",
-    "Samsung S24 Ultra Sahibabad"
+    "SR Communication Sahibabad",
+    "mobile store Shalimar Garden",
+    "mobile shop near me Shalimar Garden",
+    "buy iPhone 18 Pro Max Shalimar Garden",
+    "iPhone 18 Pro Max price Ghaziabad",
+    "buy iPhone 17 Pro Max Sahibabad",
+    "iPhone 17 Air price in India",
+    "Samsung Galaxy S27 Ultra store Ghaziabad",
+    "Samsung Galaxy S26 Ultra Shalimar Garden",
+    "0% EMI mobile shop Shalimar Garden",
+    "0 downpayment mobile store Sahibabad",
+    "Bajaj Finserv mobile store Shalimar Garden",
+    "IDFC First Bank mobile EMI Ghaziabad",
+    "old phone exchange bonus Shalimar Garden",
+    "best smartphone showroom Sahibabad",
+    "Apple authorized store Shalimar Garden",
+    "Samsung smart cafe Sahibabad",
+    "OnePlus phone dealer Ghaziabad",
+    "Vivo phone store Shalimar Garden Ext 2"
   ],
+  authors: [{ name: "SR Communication", url: "https://srcommunication.in" }],
+  creator: "SR Communication",
+  publisher: "SR Communication",
+  formatDetection: {
+    telephone: true,
+    address: true,
+    email: true,
+  },
+  alternates: {
+    canonical: 'https://srcommunication.in',
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
   openGraph: {
-    title: "SR Communication | Best Mobile Store in Shalimar Garden",
-    description: "Discover the latest smartphones and accessories from top brands at unbeatable prices right here in Shalimar Garden.",
-    url: 'https://srcommunication.com',
+    title: "SR Communication | #1 Mobile Store & 0% EMI in Shalimar Garden, Ghaziabad",
+    description: "Authorized retail destination for iPhone 18/17, Galaxy S27/S26, Vivo, OnePlus. 0% Downpayment EMI, genuine brand warranty & same-day pickup.",
+    url: 'https://srcommunication.in',
     siteName: 'SR Communication',
     locale: 'en_IN',
     type: 'website',
+    images: [
+      {
+        url: '/favicon.png',
+        width: 512,
+        height: 512,
+        alt: 'SR Communication Mobile Showroom Shalimar Garden',
+      }
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: "SR Communication | #1 Mobile Store in Shalimar Garden",
+    description: "Latest smartphones with 0% Downpayment EMI in Shalimar Garden, Ghaziabad.",
+    images: ['/favicon.png'],
   },
 };
 
@@ -32,32 +84,98 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const jsonLd = {
+  const storeJsonLd = {
     "@context": "https://schema.org",
     "@type": "MobilePhoneStore",
+    "@id": "https://srcommunication.in/#store",
     "name": "SR Communication",
-    "image": "https://srcommunication.com/favicon.png",
-    "@id": "https://srcommunication.com",
-    "url": "https://srcommunication.com",
+    "alternateName": [
+      "SR Communication Shalimar Garden",
+      "SR Mobile Store Sahibabad",
+      "SR Coms Ghaziabad"
+    ],
+    "image": "https://srcommunication.in/favicon.png",
+    "url": "https://srcommunication.in",
     "telephone": "+919717459671",
+    "priceRange": "₹₹ - ₹₹₹₹",
+    "currenciesAccepted": "INR",
+    "paymentAccepted": [
+      "Cash",
+      "Credit Card",
+      "Debit Card",
+      "UPI",
+      "Bajaj Finserv EMI",
+      "IDFC First Bank EMI",
+      "HDFC EMI",
+      "ICICI EMI"
+    ],
     "address": {
       "@type": "PostalAddress",
-      "streetAddress": "Ug-1, S/14 Shalimar Garden Extension-2, Sahibabad",
-      "addressLocality": "Ghaziabad",
+      "streetAddress": "Ug-1, S/14 Shalimar Garden Extension-2",
+      "addressLocality": "Sahibabad, Ghaziabad",
       "postalCode": "201005",
+      "addressRegion": "Uttar Pradesh",
       "addressCountry": "IN"
     },
     "geo": {
       "@type": "GeoCoordinates",
-      "latitude": 28.6791,
-      "longitude": 77.3370
+      "latitude": 28.6947,
+      "longitude": 77.3481
     },
-    "openingHoursSpecification": {
-      "@type": "OpeningHoursSpecification",
-      "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
-      "opens": "10:00",
-      "closes": "21:30"
-    } 
+    "openingHoursSpecification": [
+      {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+          "Sunday"
+        ],
+        "opens": "10:00",
+        "closes": "21:30"
+      }
+    ],
+    "areaServed": [
+      { "@type": "Place", "name": "Shalimar Garden" },
+      { "@type": "Place", "name": "Sahibabad" },
+      { "@type": "Place", "name": "Ghaziabad" },
+      { "@type": "Place", "name": "Rajendra Nagar" },
+      { "@type": "Place", "name": "Dilshad Garden" },
+      { "@type": "Place", "name": "Anand Vihar" },
+      { "@type": "Place", "name": "Delhi NCR" }
+    ],
+    "hasOfferCatalog": {
+      "@type": "OfferCatalog",
+      "name": "Smartphone & Electronics Catalog",
+      "itemListElement": [
+        { "@type": "OfferCatalog", "name": "Apple iPhones" },
+        { "@type": "OfferCatalog", "name": "Samsung Galaxy Smartphones" },
+        { "@type": "OfferCatalog", "name": "Vivo Smartphones" },
+        { "@type": "OfferCatalog", "name": "OnePlus Smartphones" },
+        { "@type": "OfferCatalog", "name": "Nothing Phones" },
+        { "@type": "OfferCatalog", "name": "Audio & Earbuds" },
+        { "@type": "OfferCatalog", "name": "Smartwatches & Tablets" }
+      ]
+    }
+  };
+
+  const websiteJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "@id": "https://srcommunication.in/#website",
+    "url": "https://srcommunication.in",
+    "name": "SR Communication",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": {
+        "@type": "EntryPoint",
+        "urlTemplate": "https://srcommunication.in/?q={search_term_string}"
+      },
+      "query-input": "required name=search_term_string"
+    }
   };
 
   return (
@@ -65,7 +183,11 @@ export default function RootLayout({
       <head>
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(storeJsonLd) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
         />
       </head>
       <body>
@@ -277,6 +399,17 @@ export default function RootLayout({
                 <span className="partner-chip">UPI (GPay / PhonePe / Paytm)</span>
                 <span className="partner-chip">Credit &amp; Debit Cards</span>
               </div>
+            </div>
+
+            {/* Price & Market Variance Disclaimer Strip */}
+            <div className="footer-disclaimer-strip">
+              <div className="disclaimer-title-row">
+                <span className="disclaimer-icon">⚠️</span>
+                <span className="disclaimer-heading">PRICE &amp; MARKET VARIANCE DISCLAIMER:</span>
+              </div>
+              <p className="disclaimer-text">
+                All product specifications, stock status, and prices displayed on this website are indicative and subject to change without prior notice based on dynamic real-time market supply, demand fluctuations, brand price revisions, and current in-store promotional schemes. Final selling prices, eligible bank cashbacks, and invoice billing will be verified and confirmed at the SR Communication showroom at the time of purchase.
+              </p>
             </div>
 
             {/* Bottom Copyright & Legal Links */}

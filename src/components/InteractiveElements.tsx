@@ -502,6 +502,201 @@ export function ProductActions({ product }: { product: Product }) {
 }
 
 // ==========================================
+// 5.5. PRODUCT MULTI-ANGLE GALLERY VIEWER
+// ==========================================
+export function ProductGalleryViewer({ product }: { product: Product }) {
+  const images = useMemo(() => {
+    if (product.gallery && product.gallery.length > 0) {
+      return product.gallery;
+    }
+    return [product.image];
+  }, [product]);
+
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [isLightboxOpen, setIsLightboxOpen] = useState(false);
+
+  const getAngleLabel = (index: number) => {
+    if (index === 0) return "Front View";
+    if (index === 1) return "Back View";
+    if (index === 2) return "Camera & Profile";
+    if (index === 3) return "Side Angle";
+    return `Angle ${index + 1}`;
+  };
+
+  const handleNext = () => {
+    setActiveIndex((prev) => (prev + 1) % images.length);
+  };
+
+  const handlePrev = () => {
+    setActiveIndex((prev) => (prev - 1 + images.length) % images.length);
+  };
+
+  return (
+    <div className="product-gallery-viewer">
+      {/* Main Interactive Stage */}
+      <div className="gallery-main-stage">
+        {product.badge && (
+          <span className={`badge-pill badge-${product.badge.toLowerCase().replace(/\s+/g, '-')}`}>
+            {product.badge}
+          </span>
+        )}
+
+        {/* Current Angle Label */}
+        <div className="gallery-angle-tag">
+          <span className="angle-icon">📐</span>
+          <span>{getAngleLabel(activeIndex)}</span>
+          {images.length > 1 && (
+            <span className="angle-counter">
+              {activeIndex + 1}/{images.length}
+            </span>
+          )}
+        </div>
+
+        {/* Zoom Button */}
+        <button
+          type="button"
+          onClick={() => setIsLightboxOpen(true)}
+          className="gallery-zoom-pill"
+          title="Zoom to inspect high-res finish"
+          aria-label="Inspect Full Image"
+        >
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            <line x1="11" y1="8" x2="11" y2="14"></line>
+            <line x1="8" y1="11" x2="14" y2="11"></line>
+          </svg>
+          <span>Zoom</span>
+        </button>
+
+        {/* Main Image */}
+        <div className="gallery-active-image-wrap" onClick={() => setIsLightboxOpen(true)}>
+          <Image
+            key={images[activeIndex]}
+            src={images[activeIndex]}
+            alt={`${product.name} - ${getAngleLabel(activeIndex)}`}
+            fill
+            priority
+            style={{ objectFit: 'contain' }}
+            sizes="(max-width: 768px) 100vw, 550px"
+          />
+        </div>
+
+        {/* Next / Previous Arrows */}
+        {images.length > 1 && (
+          <>
+            <button
+              type="button"
+              onClick={(e) => { e.stopPropagation(); handlePrev(); }}
+              className="gallery-arrow-btn arrow-left"
+              title="Previous Angle"
+              aria-label="Previous angle"
+            >
+              ‹
+            </button>
+            <button
+              type="button"
+              onClick={(e) => { e.stopPropagation(); handleNext(); }}
+              className="gallery-arrow-btn arrow-right"
+              title="Next Angle"
+              aria-label="Next angle"
+            >
+              ›
+            </button>
+          </>
+        )}
+      </div>
+
+      {/* Multi-Angle Thumbnails Track */}
+      {images.length > 1 ? (
+        <div className="gallery-thumbnails-row">
+          {images.map((imgUrl, idx) => (
+            <button
+              key={idx}
+              type="button"
+              className={`gallery-thumb-btn ${idx === activeIndex ? 'active' : ''}`}
+              onClick={() => setActiveIndex(idx)}
+              title={getAngleLabel(idx)}
+            >
+              <div className="thumb-preview-box">
+                <Image
+                  src={imgUrl}
+                  alt={`Thumbnail ${idx + 1}`}
+                  fill
+                  style={{ objectFit: 'contain' }}
+                  sizes="80px"
+                />
+              </div>
+              <span className="thumb-angle-name">{getAngleLabel(idx)}</span>
+            </button>
+          ))}
+        </div>
+      ) : (
+        <div className="gallery-single-notice">
+          <span className="notice-dot"></span>
+          <span>Official 360° physical inspection available at Shalimar Garden store</span>
+        </div>
+      )}
+
+      {/* Lightbox Modal */}
+      {isLightboxOpen && (
+        <div className="gallery-lightbox-overlay" onClick={() => setIsLightboxOpen(false)}>
+          <div className="lightbox-dialog" onClick={(e) => e.stopPropagation()}>
+            <div className="lightbox-top-bar">
+              <div className="lightbox-title-box">
+                <h4>{product.name}</h4>
+                <span>{getAngleLabel(activeIndex)} &bull; {activeIndex + 1} of {images.length}</span>
+              </div>
+              <button
+                type="button"
+                className="lightbox-close-icon"
+                onClick={() => setIsLightboxOpen(false)}
+                aria-label="Close Preview"
+              >
+                ✕
+              </button>
+            </div>
+
+            <div className="lightbox-hero-display">
+              <Image
+                src={images[activeIndex]}
+                alt={`${product.name} - ${getAngleLabel(activeIndex)}`}
+                fill
+                style={{ objectFit: 'contain' }}
+                sizes="95vw"
+              />
+            </div>
+
+            {images.length > 1 && (
+              <div className="lightbox-thumb-strip">
+                {images.map((imgUrl, idx) => (
+                  <button
+                    key={idx}
+                    type="button"
+                    className={`lightbox-mini-thumb ${idx === activeIndex ? 'active' : ''}`}
+                    onClick={() => setActiveIndex(idx)}
+                  >
+                    <div style={{ position: 'relative', width: '50px', height: '40px' }}>
+                      <Image
+                        src={imgUrl}
+                        alt={`Angle ${idx + 1}`}
+                        fill
+                        style={{ objectFit: 'contain' }}
+                        sizes="50px"
+                      />
+                    </div>
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ==========================================
 // 6. PRODUCT EMI WIDGET (DETAIL PAGE)
 // ==========================================
 export function ProductEmiWidget({ price, productName }: { price: number; productName: string }) {
@@ -979,34 +1174,48 @@ export function EmiCalculator() {
 export function HeroShowcaseSwitcher() {
   const showcasePhones = [
     {
-      name: "iPhone 16 Pro Max",
+      name: "iPhone 18 Pro Max",
       brand: "Apple",
-      price: "₹1,44,900",
-      emi: "₹12,075/mo",
-      tagline: "Apple Intelligence • A18 Pro • 5x Telephoto",
-      image: "/products/apple-iphone-16-pro-max.jpg",
-      slug: "apple-iphone-16-pro-max",
-      color: "Desert Titanium"
+      shortLabel: "iPhone 18",
+      price: "₹1,64,900",
+      emi: "₹13,742/mo",
+      tagline: "Apple A20 Pro (2nm) • Under-Display Face ID • 10x Periscope",
+      image: "/products/apple-iphone-18-pro-max-v2.png",
+      slug: "apple-iphone-18-pro-max",
+      color: "Space Titanium"
     },
     {
-      name: "Galaxy S24 Ultra",
+      name: "Galaxy S27 Ultra 5G",
       brand: "Samsung",
-      price: "₹1,29,999",
-      emi: "₹10,833/mo",
-      tagline: "Galaxy AI • 200MP Quad Cam • S-Pen Included",
-      image: "/products/samsung-galaxy-s24-ultra.jpg",
-      slug: "samsung-galaxy-s24-ultra",
-      color: "Titanium Gray"
+      shortLabel: "Galaxy S27",
+      price: "₹1,54,999",
+      emi: "₹12,917/mo",
+      tagline: "Snapdragon 8 Gen 6 • 300MP Space Zoom • Hologram AI",
+      image: "/products/samsung-galaxy-s27-ultra.jpg",
+      slug: "samsung-galaxy-s27-ultra",
+      color: "Titanium Obsidian"
     },
     {
-      name: "Vivo X100 Pro",
-      brand: "Vivo",
-      price: "₹89,999",
-      emi: "₹7,500/mo",
-      tagline: "ZEISS 1-Inch Sensor • Dimensity 9300 • 100W",
-      image: "/products/vivo-x100-pro.jpg",
-      slug: "vivo-x100-pro",
-      color: "Asteroid Black"
+      name: "iPhone 17 Pro Max",
+      brand: "Apple",
+      shortLabel: "iPhone 17",
+      price: "₹1,49,900",
+      emi: "₹12,492/mo",
+      tagline: "Apple A19 Pro • All 48MP Triple Fusion • 12GB RAM",
+      image: "/products/apple-iphone-17-pro-max.png",
+      slug: "apple-iphone-17-pro-max",
+      color: "Cosmic Orange"
+    },
+    {
+      name: "Galaxy S26 Ultra 5G",
+      brand: "Samsung",
+      shortLabel: "Galaxy S26",
+      price: "₹1,39,999",
+      emi: "₹11,667/mo",
+      tagline: "Snapdragon 8 Gen 5 • 200MP Gen 3 ISOCELL • S-Pen",
+      image: "/products/samsung-galaxy-s26-ultra-v2.png",
+      slug: "samsung-galaxy-s26-ultra",
+      color: "Titanium Black"
     }
   ];
 
@@ -1022,7 +1231,7 @@ export function HeroShowcaseSwitcher() {
             onClick={() => setActiveIdx(idx)}
             className={`showcase-tab ${activeIdx === idx ? 'active' : ''}`}
           >
-            {phone.brand}
+            {phone.shortLabel}
           </button>
         ))}
       </div>

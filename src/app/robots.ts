@@ -6,6 +6,6 @@ export default function robots(): MetadataRoute.Robots {
       userAgent: '*',
       allow: '/',
     },
-    sitemap: 'https://srcommunication.com/sitemap.xml',
+    sitemap: 'https://srcommunication.in/sitemap.xml',
   };
 }
