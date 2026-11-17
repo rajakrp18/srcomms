@@ -46,6 +46,7 @@ export function NavIcons() {
   const [cartCount, setCartCount] = useState(0);
   const [cartOpen, setCartOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     const updateCount = () => {
@@ -70,6 +71,7 @@ export function NavIcons() {
       if (e.key === 'Escape') {
         setSearchOpen(false);
         setCartOpen(false);
+        setMenuOpen(false);
       }
     };
     window.addEventListener('keydown', handleKeyDown);
@@ -86,7 +88,7 @@ export function NavIcons() {
         {/* Instant Search Button */}
         <button
           onClick={() => setSearchOpen(true)}
-          className="nav-icon-btn"
+          className="nav-icon-btn search-nav-btn"
           aria-label="Search Catalog"
           title="Search (Ctrl + K)"
         >
@@ -127,6 +129,20 @@ export function NavIcons() {
           </svg>
           {cartCount > 0 && <span className="cart-counter-badge">{cartCount}</span>}
         </button>
+
+        {/* Mobile Hamburger Menu Toggle Button */}
+        <button
+          onClick={() => setMenuOpen(true)}
+          className="nav-icon-btn mobile-menu-toggle-btn"
+          aria-label="Open Navigation Menu"
+          title="Open Menu"
+        >
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
       </div>
 
       {/* Slide-out Cart Drawer */}
@@ -134,6 +150,109 @@ export function NavIcons() {
 
       {/* Global Instant Search Modal */}
       <SearchModal isOpen={searchOpen} onClose={() => setSearchOpen(false)} />
+
+      {/* Mobile Navigation Drawer */}
+      {menuOpen && (
+        <ClientPortal>
+          <div className="mobile-menu-overlay" onClick={() => setMenuOpen(false)}>
+            <div className="mobile-menu-drawer" onClick={(e) => e.stopPropagation()}>
+              <div className="mobile-menu-header">
+                <Link href="/" onClick={() => setMenuOpen(false)} className="navbar-brand-link">
+                  <img src="/favicon.png" alt="SR Communication" className="navbar-logo-image" style={{ width: 32, height: 32 }} />
+                  <span className="navbar-brand-text" style={{ fontSize: '1.2rem' }}>
+                    <span className="brand-primary-text">SR</span> <span className="brand-gradient">Communication</span>
+                  </span>
+                </Link>
+                <button
+                  className="drawer-close-btn"
+                  onClick={() => setMenuOpen(false)}
+                  aria-label="Close Menu"
+                >
+                  ✕
+                </button>
+              </div>
+
+              <div className="mobile-menu-body">
+                <div className="mobile-menu-links">
+                  <Link href="/#catalog" onClick={() => setMenuOpen(false)} className="mobile-nav-link">
+                    <span className="mobile-link-icon">📱</span>
+                    <div>
+                      <strong>All Smartphones & Catalog</strong>
+                      <span>Browse 60+ latest phones, specs & pricing</span>
+                    </div>
+                  </Link>
+
+                  <Link href="/#categories" onClick={() => setMenuOpen(false)} className="mobile-nav-link">
+                    <span className="mobile-link-icon">🎧</span>
+                    <div>
+                      <strong>Shop by Category</strong>
+                      <span>Audio, Smartwatches, Tablets & Accessories</span>
+                    </div>
+                  </Link>
+
+                  <Link href="/#emi-calculator" onClick={() => setMenuOpen(false)} className="mobile-nav-link">
+                    <span className="mobile-link-icon">⚡</span>
+                    <div>
+                      <strong>0% Downpayment EMI Calculator</strong>
+                      <span>Calculate Bajaj & IDFC zero-interest finance</span>
+                    </div>
+                  </Link>
+
+                  <Link href="/#deals" onClick={() => setMenuOpen(false)} className="mobile-nav-link">
+                    <span className="mobile-link-icon">🔄</span>
+                    <div>
+                      <strong>Old Phone Exchange Deals</strong>
+                      <span>Up to ₹8,000 instant trade-in value</span>
+                    </div>
+                  </Link>
+
+                  <Link href="/store" onClick={() => setMenuOpen(false)} className="mobile-nav-link">
+                    <span className="mobile-link-icon">📍</span>
+                    <div>
+                      <strong>Showroom Location & Timings</strong>
+                      <span>Shalimar Garden, Sahibabad (10 AM - 9 PM)</span>
+                    </div>
+                  </Link>
+
+                  <Link href="/contact" onClick={() => setMenuOpen(false)} className="mobile-nav-link">
+                    <span className="mobile-link-icon">📞</span>
+                    <div>
+                      <strong>Contact & Support</strong>
+                      <span>Helpline, GST Invoice & inquiries</span>
+                    </div>
+                  </Link>
+                </div>
+
+                <div className="mobile-menu-actions">
+                  <a
+                    href={`https://wa.me/${STORE_WHATSAPP}?text=${encodeURIComponent("Hi SR Communication, I'm visiting your website on mobile and would like to inquire about phone stock and offers.")}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn btn-whatsapp-full"
+                    style={{ justifyContent: 'center' }}
+                  >
+                    💬 Chat on WhatsApp
+                  </a>
+
+                  <a
+                    href="tel:+919717459671"
+                    className="btn btn-outline"
+                    style={{ justifyContent: 'center', width: '100%', marginTop: '10px' }}
+                  >
+                    📞 Call Store (+91 97174 59671)
+                  </a>
+                </div>
+
+                <div className="mobile-store-timing-card">
+                  <span>🏪 <strong>SR Communication</strong></span>
+                  <p>Ug-1, S/14 Shalimar Garden Ext-2, Sahibabad, Ghaziabad, UP 201005</p>
+                  <small>Open 7 Days a Week: 10:00 AM – 9:00 PM</small>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ClientPortal>
+      )}
     </>
   );
 }
