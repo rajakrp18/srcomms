@@ -37,7 +37,7 @@ body {
   font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   color: var(--text-main);
   background-color: #f8fafc;
-  background-image: 
+  background-image:
     radial-gradient(circle at 10% 20%, rgba(99, 102, 241, 0.08) 0%, transparent 40%),
     radial-gradient(circle at 90% 15%, rgba(168, 85, 247, 0.07) 0%, transparent 35%),
     radial-gradient(circle at 50% 85%, rgba(6, 182, 212, 0.06) 0%, transparent 40%);
@@ -1706,8 +1706,13 @@ ul {
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
 }
 
 .search-modal-box {
@@ -1724,8 +1729,15 @@ ul {
 }
 
 @keyframes scaleUp {
-  from { transform: scale(0.95); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
+  from {
+    transform: scale(0.95);
+    opacity: 0;
+  }
+
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
 .search-input-header {
@@ -1996,8 +2008,13 @@ ul {
 }
 
 @keyframes slideInRight {
-  from { transform: translateX(100%); }
-  to { transform: translateX(0); }
+  from {
+    transform: translateX(100%);
+  }
+
+  to {
+    transform: translateX(0);
+  }
 }
 
 .drawer-header {
@@ -2567,8 +2584,15 @@ ul {
 }
 
 @keyframes modalScaleUp {
-  from { opacity: 0; transform: scale(0.95); }
-  to { opacity: 1; transform: scale(1); }
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 .lightbox-top-bar {
@@ -2635,6 +2659,11 @@ ul {
   background: #f8fafc;
   border-top: 1px solid #e2e8f0;
   flex-shrink: 0;
+}
+
+padding: 16px 20px;
+background: #f8fafc;
+border-top: 1px solid #e2e8f0;
 }
 
 .lightbox-mini-thumb {
@@ -3099,45 +3128,151 @@ ul {
    RESPONSIVE MEDIA QUERIES
 ======================================================== */
 @media (max-width: 1100px) {
-  .hero-headline { font-size: 3.2rem; }
-  .modern-product-grid { grid-template-columns: repeat(3, 1fr); }
-  .categories-slider-grid { grid-template-columns: repeat(3, 1fr); }
-  .hero-trust-bar { grid-template-columns: repeat(2, 1fr); }
-  .product-details-grid { grid-template-columns: 1fr; }
-  .product-gallery-card { position: static; }
-  .related-cards-grid { grid-template-columns: repeat(2, 1fr); }
+  .hero-headline {
+    font-size: 3.2rem;
+  }
+
+  .modern-product-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .categories-slider-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .hero-trust-bar {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .product-details-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .product-gallery-card {
+    position: static;
+  }
+
+  .related-cards-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 @media (max-width: 768px) {
-  .hero-container-grid { grid-template-columns: 1fr; gap: 40px; }
-  .hero-text-col { max-width: 100%; text-align: center; }
-  .hero-headline { font-size: 2.6rem; }
-  .hero-eyebrow-pill { margin: 0 auto 16px auto; }
-  .hero-cta-row { justify-content: center; }
-  .hero-perks-row { justify-content: center; }
-  .hero-trust-bar { grid-template-columns: 1fr; gap: 16px; }
-  .categories-slider-grid { grid-template-columns: repeat(2, 1fr); }
-  .modern-product-grid { grid-template-columns: repeat(2, 1fr); gap: 16px; }
-  .emi-calc-wrapper { grid-template-columns: 1fr; padding: 24px; }
-  .exchange-banner-card { flex-direction: column; text-align: center; padding: 36px 24px; }
-  .promo-pill { align-self: center; }
-  .showroom-card-grid { grid-template-columns: 1fr; padding: 24px; }
-  .search-pill-label, .kbd-shortcut { display: none; }
-  .quick-view-grid { grid-template-columns: 1fr; }
-  .spec-row { grid-template-columns: 110px 1fr; }
-  .product-main-title { font-size: 2.2rem; }
-  .cart-drawer-panel { width: 100%; }
+  .hero-container-grid {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+
+  .hero-text-col {
+    max-width: 100%;
+    text-align: center;
+  }
+
+  .hero-headline {
+    font-size: 2.6rem;
+  }
+
+  .hero-eyebrow-pill {
+    margin: 0 auto 16px auto;
+  }
+
+  .hero-cta-row {
+    justify-content: center;
+  }
+
+  .hero-perks-row {
+    justify-content: center;
+  }
+
+  .hero-trust-bar {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .categories-slider-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .modern-product-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+  }
+
+  .emi-calc-wrapper {
+    grid-template-columns: 1fr;
+    padding: 24px;
+  }
+
+  .exchange-banner-card {
+    flex-direction: column;
+    text-align: center;
+    padding: 36px 24px;
+  }
+
+  .promo-pill {
+    align-self: center;
+  }
+
+  .showroom-card-grid {
+    grid-template-columns: 1fr;
+    padding: 24px;
+  }
+
+  .search-pill-label,
+  .kbd-shortcut {
+    display: none;
+  }
+
+  .quick-view-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .spec-row {
+    grid-template-columns: 110px 1fr;
+  }
+
+  .product-main-title {
+    font-size: 2.2rem;
+  }
+
+  .cart-drawer-panel {
+    width: 100%;
+  }
 }
 
 @media (max-width: 520px) {
-  .hero-headline { font-size: 2.1rem; }
-  .modern-product-grid { grid-template-columns: 1fr; }
-  .categories-slider-grid { grid-template-columns: 1fr; }
-  .nav-links { display: none; } /* Mobile bottom bar takes over */
-  .catalog-title-group h2 { font-size: 1.8rem; }
-  .calc-title { font-size: 1.7rem; }
-  .emi-big-number { font-size: 2.2rem; }
-  .related-cards-grid { grid-template-columns: 1fr; }
+  .hero-headline {
+    font-size: 2.1rem;
+  }
+
+  .modern-product-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .categories-slider-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .nav-links {
+    display: none;
+  }
+
+  /* Mobile bottom bar takes over */
+  .catalog-title-group h2 {
+    font-size: 1.8rem;
+  }
+
+  .calc-title {
+    font-size: 1.7rem;
+  }
+
+  .emi-big-number {
+    font-size: 2.2rem;
+  }
+
+  .related-cards-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 
@@ -3484,6 +3619,7 @@ ul {
     grid-template-columns: repeat(3, 1fr);
     gap: 35px;
   }
+
   .footer-trust-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: 20px;
@@ -3496,20 +3632,25 @@ ul {
     gap: 30px;
     padding: 50px 0 40px 0;
   }
+
   .footer-brand-col {
     grid-column: span 2;
   }
+
   .footer-newsletter-col {
     grid-column: span 2;
   }
+
   .footer-trust-grid {
     grid-template-columns: 1fr;
     gap: 16px;
   }
+
   .footer-partner-strip {
     flex-direction: column;
     align-items: flex-start;
   }
+
   .footer-bottom {
     flex-direction: column;
     text-align: center;
@@ -3523,6 +3664,7 @@ ul {
     grid-template-columns: 1fr;
     gap: 30px;
   }
+
   .footer-brand-col,
   .footer-newsletter-col {
     grid-column: span 1;
