@@ -67,101 +67,184 @@ export default function ContactPage() {
           </p>
         </div>
 
-        {/* 4 Core Showroom Cards Grid */}
+        {/* 4 Core Showroom Cards Grid (2x2 Balanced Layout) */}
         <div className="contact-cards-grid">
           {/* Card 1: Visit Showroom */}
           <div className="contact-card">
-            <div className="contact-card-icon-wrap icon-visit">📍</div>
-            <h3 className="contact-card-title">Visit Our Showroom</h3>
-            <p className="contact-card-detail">
-              <strong>SR COMMUNICATION</strong><br />
-              Ug-1, S/14 Shalimar Garden Ext-2,<br />
-              Sahibabad, Ghaziabad, UP 201005
-            </p>
-            <div className="contact-card-meta">
-              <span className="meta-tag">Landmark: Near Shiva Chowk</span>
-              <span className="meta-tag">Metro: Major Mohit Sharma (5 mins)</span>
+            <div className="contact-card-header">
+              <div className="contact-card-icon-wrap icon-visit">📍</div>
+              <div>
+                <span className="contact-card-eyebrow">PHYSICAL STORE</span>
+                <h3 className="contact-card-title">Visit Our Showroom</h3>
+              </div>
             </div>
-            <a
-              href="https://www.google.com/maps/dir//SR+COMMUNICATION,+Shop+No,+S.M.+Mall,+Block+B,+Shalimar+Garden,+Sahibabad,+Ghaziabad,+Uttar+Pradesh+201005"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn btn-outline contact-card-btn"
-            >
-              Open in Google Maps ↗
-            </a>
+
+            <p className="contact-card-sub">
+              Experience flagship devices in person, unbox sealed units, and consult with our smartphone experts in Sahibabad:
+            </p>
+
+            <div className="contact-card-address-box">
+              <strong className="store-name">SR COMMUNICATION</strong>
+              <span className="store-street">Ug-1, S/14 Shalimar Garden Ext-2</span>
+              <span className="store-city">Sahibabad, Ghaziabad, Uttar Pradesh 201005</span>
+            </div>
+
+            <div className="contact-badges-row">
+              <span className="contact-badge-pill">📍 Landmark: Near Shiva Chowk</span>
+              <span className="contact-badge-pill">🚇 Metro: Major Mohit Sharma (5 mins)</span>
+              <span className="contact-badge-pill">🅿️ Free Dedicated Customer Parking</span>
+            </div>
+
+            <div className="contact-card-btn-wrap">
+              <a
+                href="https://www.google.com/maps/dir//SR+COMMUNICATION,+Shop+No,+S.M.+Mall,+Block+B,+Shalimar+Garden,+Sahibabad,+Ghaziabad,+Uttar+Pradesh+201005"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn btn-outline contact-card-btn"
+              >
+                Open in Google Maps ↗
+              </a>
+            </div>
           </div>
 
           {/* Card 2: Phone Helplines */}
           <div className="contact-card">
-            <div className="contact-card-icon-wrap icon-call">📞</div>
-            <h3 className="contact-card-title">Call Us Directly</h3>
-            <p className="contact-card-detail">
-              Speak directly with our showroom executives for instant device availability and price confirmations:
+            <div className="contact-card-header">
+              <div className="contact-card-icon-wrap icon-call">📞</div>
+              <div>
+                <span className="contact-card-eyebrow">VOICE HELPLINES</span>
+                <h3 className="contact-card-title">Call Us Directly</h3>
+              </div>
+            </div>
+
+            <p className="contact-card-sub">
+              Speak directly with our showroom team for instant device availability and price confirmations:
             </p>
-            <div className="contact-phone-list">
-              <a href="tel:+919717459671" className="phone-line-link">
-                <span className="phone-icon">📱</span> +91 97174 59671 <span className="phone-role">(Sales &amp; Finance)</span>
+
+            <div className="contact-phone-grid">
+              <a href="tel:+919717459671" className="contact-phone-tile">
+                <div className="phone-tile-info">
+                  <span className="phone-tile-number">+91 97174 59671</span>
+                  <span className="phone-tile-role">Sales, VIP Pre-orders &amp; 0% EMI Desk</span>
+                </div>
+                <span className="phone-tile-action">Call 📱</span>
               </a>
-              <a href="tel:+919958143420" className="phone-line-link">
-                <span className="phone-icon">📱</span> +91 99581 43420 <span className="phone-role">(Store Ops)</span>
+
+              <a href="tel:+919958143420" className="contact-phone-tile">
+                <div className="phone-tile-info">
+                  <span className="phone-tile-number">+91 99581 43420</span>
+                  <span className="phone-tile-role">Showroom Operations &amp; Stock Verification</span>
+                </div>
+                <span className="phone-tile-action">Call 📱</span>
               </a>
-              <a href="tel:01202630317" className="phone-line-link">
-                <span className="phone-icon">☎️</span> 0120 2630317 <span className="phone-role">(Landline Desk)</span>
+
+              <a href="tel:01202630317" className="contact-phone-tile">
+                <div className="phone-tile-info">
+                  <span className="phone-tile-number">0120 2630317</span>
+                  <span className="phone-tile-role">Showroom Landline Reception Desk</span>
+                </div>
+                <span className="phone-tile-action">Call ☎️</span>
               </a>
             </div>
-            <a href="tel:+919717459671" className="btn btn-primary contact-card-btn">
-              Call Store Manager Now
-            </a>
+
+            <div className="contact-card-btn-wrap">
+              <a href="tel:+919717459671" className="btn btn-primary contact-card-btn">
+                Call Store Manager (+91 97174 59671)
+              </a>
+            </div>
           </div>
 
           {/* Card 3: WhatsApp Support Desk */}
           <div className="contact-card highlight-whatsapp-card">
-            <div className="contact-card-icon-wrap icon-wa">💬</div>
-            <h3 className="contact-card-title">WhatsApp Priority Desk</h3>
-            <p className="contact-card-detail">
-              Fastest way to get real-time price quotes, photos of factory-sealed boxes, and pre-booking verification:
-            </p>
-            <div className="wa-perks-list">
-              <span>⚡ Average response time: <strong>&lt; 5 mins</strong></span>
-              <span>⚡ Instant 0% EMI calculation quotes</span>
-              <span>⚡ Share old phone photos for instant valuation</span>
+            <div className="contact-card-header">
+              <div className="contact-card-icon-wrap icon-wa">💬</div>
+              <div>
+                <div className="wa-title-row">
+                  <span className="contact-card-eyebrow">FASTEST RESPONSE</span>
+                  <span className="live-status-pill">🟢 Online Now</span>
+                </div>
+                <h3 className="contact-card-title">WhatsApp Priority Desk</h3>
+              </div>
             </div>
-            <a
-              href="https://wa.me/919717459671?text=Hi%20SR%20Communication,%20I%20want%20to%20inquire%20about%20smartphone%20pricing%20and%20availability%20in%20your%20Shalimar%20Garden%20store."
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn btn-whatsapp-full contact-card-btn"
-            >
-              Start WhatsApp Chat 💬
-            </a>
+
+            <p className="contact-card-sub">
+              Get immediate price confirmations, sealed box photos, and instant 0% EMI quotes without waiting:
+            </p>
+
+            <div className="wa-perks-list">
+              <div className="wa-perk-item">
+                <span className="wa-perk-icon">⚡</span>
+                <span className="wa-perk-text">Average response time: <strong>under 5 minutes</strong> (10 AM – 9 PM)</span>
+              </div>
+              <div className="wa-perk-item">
+                <span className="wa-perk-icon">📸</span>
+                <span className="wa-perk-text">Request real-time photos of factory-sealed boxes &amp; color variants</span>
+              </div>
+              <div className="wa-perk-item">
+                <span className="wa-perk-icon">🔄</span>
+                <span className="wa-perk-text">Send old smartphone photos for instant top-market exchange valuation</span>
+              </div>
+              <div className="wa-perk-item">
+                <span className="wa-perk-icon">💳</span>
+                <span className="wa-perk-text">Instant paperless 0% EMI eligibility calculation check</span>
+              </div>
+            </div>
+
+            <div className="contact-card-btn-wrap">
+              <a
+                href="https://wa.me/919717459671?text=Hi%20SR%20Communication,%20I%20want%20to%20inquire%20about%20smartphone%20pricing%20and%20availability%20in%20your%20Shalimar%20Garden%20store."
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn btn-whatsapp-full contact-card-btn"
+              >
+                Start WhatsApp Chat with Showroom 💬
+              </a>
+            </div>
           </div>
 
           {/* Card 4: Hours & Business Credentials */}
           <div className="contact-card">
-            <div className="contact-card-icon-wrap icon-info">🏢</div>
-            <h3 className="contact-card-title">Timings &amp; Credentials</h3>
-            <div className="contact-credentials-block">
-              <div className="cred-row">
-                <span className="cred-label">Showroom Hours:</span>
-                <strong className="cred-val text-green">10:00 AM – 9:00 PM</strong>
-              </div>
-              <div className="cred-row">
-                <span className="cred-label">Operating Days:</span>
-                <strong className="cred-val">Monday – Sunday (Open 7 Days)</strong>
-              </div>
-              <div className="cred-row">
-                <span className="cred-label">GSTIN:</span>
-                <strong className="cred-val font-mono">09AKEPJ4696D1ZZ</strong>
-              </div>
-              <div className="cred-row">
-                <span className="cred-label">Official Email:</span>
-                <strong className="cred-val">srcommunication98@gmail.com</strong>
+            <div className="contact-card-header">
+              <div className="contact-card-icon-wrap icon-info">🏢</div>
+              <div>
+                <span className="contact-card-eyebrow">OFFICIAL CREDENTIALS</span>
+                <h3 className="contact-card-title">Timings &amp; Business Info</h3>
               </div>
             </div>
-            <Link href="/about" className="btn btn-outline contact-card-btn">
-              About Our Founders &amp; Legacy →
-            </Link>
+
+            <p className="contact-card-sub">
+              Verified business registration and showroom operational timings in Shalimar Garden:
+            </p>
+
+            <div className="contact-credentials-grid">
+              <div className="cred-block">
+                <span className="cred-label">SHOWROOM OPERATING HOURS</span>
+                <strong className="cred-val text-green">10:00 AM – 9:00 PM (Open 7 Days a Week)</strong>
+              </div>
+
+              <div className="cred-block">
+                <span className="cred-label">REGISTERED LEGAL ENTITY</span>
+                <strong className="cred-val">SR COMMUNICATION</strong>
+              </div>
+
+              <div className="cred-block">
+                <span className="cred-label">GSTIN REGISTRATION NUMBER</span>
+                <strong className="cred-val font-mono">09AKEPJ4696D1ZZ</strong>
+              </div>
+
+              <div className="cred-block">
+                <span className="cred-label">OFFICIAL INQUIRIES &amp; BILLING EMAIL</span>
+                <a href="mailto:srcommunication98@gmail.com" className="cred-val cred-email-link">
+                  srcommunication98@gmail.com
+                </a>
+              </div>
+            </div>
+
+            <div className="contact-card-btn-wrap">
+              <Link href="/about" className="btn btn-outline contact-card-btn">
+                About Our Founders &amp; 15-Yr Legacy →
+              </Link>
+            </div>
           </div>
         </div>
 

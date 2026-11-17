@@ -4695,143 +4695,264 @@ ul {
 }
 
 /* 4 Cards Grid */
+/* 4 Cards Grid - Balanced 2x2 on Desktop/Tablet, 1-col on Mobile */
 .contact-cards-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 24px;
-  margin-bottom: 48px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 28px;
+  margin-bottom: 56px;
 }
 
 .contact-card {
   background: #ffffff;
-  border-radius: 20px;
-  padding: 32px 24px;
+  border-radius: 24px;
+  padding: 36px 32px;
   border: 1px solid #e2e8f0;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.04);
   display: flex;
   flex-direction: column;
-  transition: transform 0.25s, box-shadow 0.25s;
-}
-.contact-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.08);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
 }
 
-.highlight-whatsapp-card {
-  background: linear-gradient(180deg, #ffffff 0%, #f0fdf4 100%);
-  border-color: #86efac;
+.contact-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.08);
+}
+
+.contact-card-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
 }
 
 .contact-card-icon-wrap {
-  width: 60px;
-  height: 60px;
+  width: 58px;
+  height: 58px;
   border-radius: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 1.8rem;
-  margin-bottom: 20px;
+  flex-shrink: 0;
 }
 .icon-visit { background: #e0e7ff; color: #4338ca; }
 .icon-call { background: #fee2e2; color: #b91c1c; }
 .icon-wa { background: #dcfce7; color: #15803d; }
 .icon-info { background: #fef3c7; color: #b45309; }
 
-.contact-card-title {
-  font-size: 1.3rem;
+.contact-card-eyebrow {
+  display: block;
+  font-size: 0.72rem;
   font-weight: 800;
+  color: var(--primary, #4f46e5);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+
+.contact-card-title {
+  font-size: 1.45rem;
+  font-weight: 900;
   color: #0f172a;
-  margin-bottom: 12px;
+  letter-spacing: -0.3px;
+  margin: 0;
 }
 
-.contact-card-detail {
-  font-size: 0.95rem;
-  color: #475569;
+.contact-card-sub {
+  font-size: 0.96rem;
+  color: #64748b;
   line-height: 1.6;
-  margin-bottom: 16px;
-  flex: 1;
-}
-
-.contact-card-meta {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
   margin-bottom: 20px;
 }
-.meta-tag {
+
+/* Card 1 Specifics: Address Box */
+.contact-card-address-box {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 16px;
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 16px;
+}
+.store-name {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #0f172a;
+}
+.store-street,
+.store-city {
+  font-size: 0.95rem;
+  color: #475569;
+  line-height: 1.5;
+}
+
+.contact-badges-row {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+.contact-badge-pill {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #334155;
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  padding: 6px 12px;
+  border-radius: 8px;
+}
+
+/* Card 2 Specifics: Phone Grid */
+.contact-phone-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+.contact-phone-tile {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 12px 16px;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+.contact-phone-tile:hover {
+  background: #eff6ff;
+  border-color: #bfdbfe;
+  transform: translateX(2px);
+}
+.phone-tile-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.phone-tile-number {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #0f172a;
+  letter-spacing: 0.2px;
+}
+.phone-tile-role {
   font-size: 0.78rem;
   font-weight: 600;
   color: #64748b;
-  background: #f1f5f9;
-  padding: 4px 10px;
-  border-radius: 6px;
+}
+.phone-tile-action {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--primary, #4f46e5);
+  background: #ffffff;
+  border: 1px solid #e0e7ff;
+  padding: 6px 12px;
+  border-radius: 20px;
+  white-space: nowrap;
 }
 
+/* Card 3 Specifics: WhatsApp Priority */
+.highlight-whatsapp-card {
+  background: linear-gradient(180deg, #ffffff 0%, #f0fdf4 100%);
+  border-color: #86efac;
+  box-shadow: 0 12px 36px rgba(16, 185, 129, 0.08);
+}
+.wa-title-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 2px;
+}
+.live-status-pill {
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: #059669;
+  background: #dcfce7;
+  padding: 2px 8px;
+  border-radius: 20px;
+}
+.wa-perks-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid #bbf7d0;
+  border-radius: 16px;
+  padding: 16px 20px;
+  margin-bottom: 24px;
+}
+.wa-perk-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 0.92rem;
+  color: #166534;
+  line-height: 1.5;
+}
+.wa-perk-icon {
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+/* Card 4 Specifics: Credentials Grid */
+.contact-credentials-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+  margin-bottom: 24px;
+}
+.cred-block {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.cred-block:nth-child(4) {
+  grid-column: span 2;
+}
+.cred-label {
+  font-size: 0.7rem;
+  font-weight: 800;
+  color: #64748b;
+  letter-spacing: 0.5px;
+}
+.cred-val {
+  font-size: 0.92rem;
+  color: #0f172a;
+  word-break: break-all;
+}
+.cred-email-link {
+  color: var(--primary, #4f46e5);
+  text-decoration: none;
+  font-weight: 700;
+}
+.cred-email-link:hover {
+  text-decoration: underline;
+}
+
+/* Common Card Button Wrappers */
+.contact-card-btn-wrap {
+  margin-top: auto;
+  padding-top: 8px;
+}
 .contact-card-btn {
   width: 100%;
   text-align: center;
   justify-content: center;
-  margin-top: auto;
-}
-
-.contact-phone-list {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-bottom: 20px;
-}
-.phone-line-link {
+  padding: 14px 20px;
+  font-size: 0.98rem;
+  border-radius: 14px;
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 0.95rem;
-  font-weight: 700;
-  color: #0f172a;
-  text-decoration: none;
-  padding: 6px 8px;
-  border-radius: 8px;
-  background: #f8fafc;
-  transition: all 0.2s;
-}
-.phone-line-link:hover {
-  background: #f1f5f9;
-  color: var(--primary, #4f46e5);
-}
-.phone-role {
-  font-size: 0.75rem;
-  font-weight: 500;
-  color: #64748b;
-  margin-left: auto;
-}
-
-.wa-perks-list {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  font-size: 0.88rem;
-  color: #166534;
-  margin-bottom: 20px;
-}
-
-.contact-credentials-block {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-bottom: 20px;
-  font-size: 0.88rem;
-}
-.cred-row {
-  display: flex;
-  justify-content: space-between;
-  border-bottom: 1px solid #f1f5f9;
-  padding-bottom: 6px;
-}
-.cred-label {
-  color: #64748b;
-}
-.cred-val {
-  color: #0f172a;
-  font-weight: 700;
 }
 
 /* Contact VIP Form Card */
@@ -5663,6 +5784,16 @@ ul {
 }
 
 @media (max-width: 768px) {
+  .contact-cards-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .contact-card {
+    padding: 26px 20px;
+    border-radius: 20px;
+  }
+
   .contact-hero-title,
   .about-hero-title,
   .legal-title {
@@ -5696,6 +5827,13 @@ ul {
 }
 
 @media (max-width: 480px) {
+  .contact-credentials-grid {
+    grid-template-columns: 1fr;
+  }
+  .cred-block:nth-child(4) {
+    grid-column: span 1;
+  }
+
   .contact-hero-title,
   .about-hero-title,
   .legal-title {
