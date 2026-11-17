@@ -1191,121 +1191,354 @@ export function CatalogSection({ initialProducts }: { initialProducts: Product[]
 // ==========================================
 // 8. INTERACTIVE 0% EMI CALCULATOR (HOME)
 // ==========================================
+const EMI_PRESET_PHONES = [
+  { name: "iPhone 18 Pro Max", price: 164900, brand: "Apple", badge: "Flagship" },
+  { name: "iPhone 18 Pro", price: 139900, brand: "Apple", badge: "New" },
+  { name: "Galaxy S26 Ultra", price: 134999, brand: "Samsung", badge: "Hot" },
+  { name: "iPhone 17 Pro Max", price: 149900, brand: "Apple", badge: "Popular" },
+  { name: "iPhone 16", price: 69900, brand: "Apple", badge: "Value" },
+  { name: "Vivo V40 Pro", price: 49999, brand: "Vivo", badge: "Camera" },
+  { name: "OnePlus 13", price: 64999, brand: "OnePlus", badge: "Speed" },
+  { name: "Budget Flagship", price: 19999, brand: "Smart Choice", badge: "Affordable" },
+];
+
+const EMI_BANK_PARTNERS = [
+  {
+    id: "bajaj",
+    name: "Bajaj Finserv",
+    icon: "💳",
+    scheme: "8/0 & 10/2 Scheme",
+    highlight: "Zero Downpayment Available",
+    details: "Instant paperless approval via Bajaj EMI Card or Aadhaar OTP in 10 minutes.",
+  },
+  {
+    id: "idfc",
+    name: "IDFC First Bank",
+    icon: "🏛️",
+    scheme: "Easy Buy 0% EMI",
+    highlight: "Aadhaar + PAN Biometric",
+    details: "Paperless digital approval in showroom. No salary slip needed for purchases up to ₹1,00,000.",
+  },
+  {
+    id: "hdfc",
+    name: "HDFC Bank / Cards",
+    icon: "🏦",
+    scheme: "Credit/Debit Card No-Cost",
+    highlight: "Instant OTP Based",
+    details: "Pre-approved No-Cost EMI for HDFC credit and debit cards with reward points intact.",
+  },
+  {
+    id: "tvs",
+    name: "TVS Credit / Home",
+    icon: "🏢",
+    scheme: "First-Time Buyer Scheme",
+    highlight: "No CIBIL Score Needed",
+    details: "Designed for first-time smartphone buyers and students establishing credit records.",
+  },
+];
+
 export function EmiCalculator() {
-  const [devicePrice, setDevicePrice] = useState(79900);
+  const [devicePrice, setDevicePrice] = useState(139900);
+  const [priceInput, setPriceInput] = useState("139900");
+  const [selectedPreset, setSelectedPreset] = useState<string | null>("iPhone 18 Pro");
+  const [selectedBankId, setSelectedBankId] = useState("bajaj");
   const [downpaymentPercent, setDownpaymentPercent] = useState(0);
-  const [tenureMonths, setTenureMonths] = useState(6);
+  const [tenureMonths, setTenureMonths] = useState(8);
+
+  const activeBank = EMI_BANK_PARTNERS.find((b) => b.id === selectedBankId) || EMI_BANK_PARTNERS[0];
+
+  const handlePriceSlider = (val: number) => {
+    setDevicePrice(val);
+    setPriceInput(String(val));
+    setSelectedPreset(null);
+  };
+
+  const handlePriceInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const raw = e.target.value.replace(/[^0-9]/g, '');
+    setPriceInput(raw);
+    const num = Number(raw);
+    if (!isNaN(num) && num > 0) {
+      setDevicePrice(Math.min(Math.max(num, 5000), 300000));
+      setSelectedPreset(null);
+    }
+  };
+
+  const handleSelectPreset = (preset: typeof EMI_PRESET_PHONES[0]) => {
+    setDevicePrice(preset.price);
+    setPriceInput(String(preset.price));
+    setSelectedPreset(preset.name);
+  };
 
   const downpaymentAmount = Math.round((devicePrice * downpaymentPercent) / 100);
-  const loanAmount = devicePrice - downpaymentAmount;
-  const monthlyEmi = Math.round(loanAmount / tenureMonths);
+  const loanAmount = Math.max(0, devicePrice - downpaymentAmount);
+  const monthlyEmi = tenureMonths > 0 ? Math.round(loanAmount / tenureMonths) : 0;
+  // Realistic market interest saved compared to standard 14% p.a. credit card finance
+  const marketInterestSaved = Math.round((loanAmount * 0.14 * (tenureMonths / 12)));
+  const totalPayable = downpaymentAmount + (monthlyEmi * tenureMonths);
+
+  const waMessage = `Hi SR Communication! I used your 0% EMI Calculator on the website and want to check my eligibility:
+
+📱 Device Value: ₹${devicePrice.toLocaleString('en-IN')}${selectedPreset ? ` (${selectedPreset})` : ''}
+🏦 Financing Partner: ${activeBank.name} (${activeBank.scheme})
+💰 Downpayment: ₹${downpaymentAmount.toLocaleString('en-IN')} (${downpaymentPercent}%)
+📅 Loan Tenure: ${tenureMonths} Months
+⚡ Estimated Monthly EMI: ₹${monthlyEmi.toLocaleString('en-IN')}/month
+🎉 Normal Market Interest Saved: ₹${marketInterestSaved.toLocaleString('en-IN')} (0% No-Cost EMI)
+
+Can I get spot approval and pick this up today at your Shalimar Garden showroom?`;
 
   return (
     <section className="emi-calculator-section" id="emi-calculator">
       <div className="container">
-        <div className="emi-calc-wrapper">
-          <div className="emi-calc-left">
-            <span className="section-eyebrow">INSTANT FINANCE ESTIMATOR</span>
-            <h2 className="calc-title">0% Interest Downpayment Calculator</h2>
-            <p className="calc-desc">
-              Upgrade your smartphone with zero financial burden. We partner with Bajaj Finserv, IDFC First Bank, HDFC, and ICICI for instant spot approvals in our Shalimar Garden showroom.
-            </p>
+        {/* Section Header */}
+        <div className="emi-section-header">
+          <span className="section-eyebrow">⚡ 15-MINUTE SHOWROOM PAPERLESS APPROVAL</span>
+          <h2 className="calc-title">0% Interest Downpayment &amp; EMI Calculator</h2>
+          <p className="calc-desc">
+            Upgrade to your dream flagship with zero financial burden. We partner with Bajaj Finserv, IDFC First Bank, HDFC, and TVS Credit for on-spot, zero-downpayment approvals at our Shalimar Garden showroom.
+          </p>
+        </div>
 
+        {/* Quick Presets Bar */}
+        <div className="emi-presets-bar">
+          <span className="emi-presets-label">Quick Flagship Presets:</span>
+          <div className="emi-presets-scroll">
+            {EMI_PRESET_PHONES.map((p) => {
+              const isSelected = selectedPreset === p.name || devicePrice === p.price;
+              return (
+                <button
+                  key={p.name}
+                  onClick={() => handleSelectPreset(p)}
+                  className={`emi-preset-pill ${isSelected ? 'active' : ''}`}
+                  type="button"
+                >
+                  <span className="preset-name">{p.name}</span>
+                  <span className="preset-price">₹{p.price.toLocaleString('en-IN')}</span>
+                  {p.badge && <span className="preset-badge">{p.badge}</span>}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Main Calculator Grid */}
+        <div className="emi-calc-wrapper emi-calc-wrapper-v2">
+          {/* Left Column: Interactive Controls */}
+          <div className="emi-calc-left">
+            {/* 1. Device Value Dual Input (Slider + Direct Input) */}
             <div className="calc-control-group">
               <div className="calc-slider-header">
-                <label>Select Device Price:</label>
-                <span className="slider-current-val">₹{devicePrice.toLocaleString('en-IN')}</span>
+                <label htmlFor="device-price-input">Device Price (MRP / Offer Price):</label>
+                <div className="calc-price-input-wrap">
+                  <span className="currency-prefix">₹</span>
+                  <input
+                    id="device-price-input"
+                    type="text"
+                    value={priceInput}
+                    onChange={handlePriceInput}
+                    className="calc-direct-number-input"
+                    aria-label="Direct device price input"
+                  />
+                </div>
               </div>
               <input
                 type="range"
                 min="10000"
-                max="180000"
-                step="5000"
+                max="200000"
+                step="1000"
                 value={devicePrice}
-                onChange={(e) => setDevicePrice(Number(e.target.value))}
+                onChange={(e) => handlePriceSlider(Number(e.target.value))}
                 className="calc-range-slider"
+                aria-label="Device price slider"
               />
               <div className="slider-minmax-labels">
                 <span>₹10,000</span>
-                <span>₹1,80,000</span>
+                <span>₹1,00,000</span>
+                <span>₹2,00,000+</span>
               </div>
             </div>
 
+            {/* 2. Bank Scheme Tabs */}
             <div className="calc-control-group">
-              <label>Select Downpayment:</label>
+              <label>Select Financing Partner:</label>
+              <div className="calc-bank-tabs-grid">
+                {EMI_BANK_PARTNERS.map((bank) => {
+                  const isSelected = selectedBankId === bank.id;
+                  return (
+                    <button
+                      key={bank.id}
+                      type="button"
+                      onClick={() => setSelectedBankId(bank.id)}
+                      className={`calc-bank-tab-card ${isSelected ? 'active' : ''}`}
+                    >
+                      <div className="bank-tab-top">
+                        <span className="bank-tab-icon">{bank.icon}</span>
+                        <strong className="bank-tab-name">{bank.name}</strong>
+                      </div>
+                      <span className="bank-tab-scheme">{bank.scheme}</span>
+                      <span className="bank-tab-highlight">{bank.highlight}</span>
+                    </button>
+                  );
+                })}
+              </div>
+              <div className="active-bank-info-note">
+                ℹ️ <strong>{activeBank.name}:</strong> {activeBank.details}
+              </div>
+            </div>
+
+            {/* 3. Downpayment Selection */}
+            <div className="calc-control-group">
+              <div className="calc-group-title-row">
+                <label>Select Downpayment (Paid on spot):</label>
+                <span className="dp-calculated-tag">
+                  {downpaymentPercent === 0 ? "₹0 Upfront (Zero Down)" : `₹${downpaymentAmount.toLocaleString('en-IN')}`}
+                </span>
+              </div>
               <div className="calc-btn-group">
-                {[0, 15, 25, 40].map((dp) => (
+                {[
+                  { pct: 0, label: "0% Downpayment (Walk In, Walk Out)" },
+                  { pct: 15, label: "15% Down" },
+                  { pct: 25, label: "25% Down" },
+                  { pct: 33, label: "33% Down" },
+                  { pct: 50, label: "50% Down" },
+                ].map((item) => (
                   <button
-                    key={dp}
-                    onClick={() => setDownpaymentPercent(dp)}
-                    className={`calc-btn ${downpaymentPercent === dp ? 'active' : ''}`}
+                    key={item.pct}
+                    type="button"
+                    onClick={() => setDownpaymentPercent(item.pct)}
+                    className={`calc-btn ${downpaymentPercent === item.pct ? 'active' : ''}`}
                   >
-                    {dp === 0 ? '0% Downpayment' : `${dp}% Down`}
+                    {item.label}
                   </button>
                 ))}
               </div>
             </div>
 
+            {/* 4. Tenure Duration */}
             <div className="calc-control-group">
-              <label>Select Tenure:</label>
+              <label>Select Loan Tenure:</label>
               <div className="calc-btn-group">
-                {[3, 6, 9, 12, 18].map((m) => (
-                  <button
-                    key={m}
-                    onClick={() => setTenureMonths(m)}
-                    className={`calc-btn ${tenureMonths === m ? 'active' : ''}`}
-                  >
-                    {m} Months
-                  </button>
-                ))}
+                {[3, 6, 8, 9, 10, 12, 18, 24].map((m) => {
+                  const approxPerMonth = tenureMonths > 0 ? Math.round(loanAmount / m) : 0;
+                  return (
+                    <button
+                      key={m}
+                      type="button"
+                      onClick={() => setTenureMonths(m)}
+                      className={`calc-btn calc-tenure-btn ${tenureMonths === m ? 'active' : ''}`}
+                    >
+                      <span className="tenure-months">{m} Months</span>
+                      <span className="tenure-preview-emi">~₹{approxPerMonth.toLocaleString('en-IN')}/mo</span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Required Documents Checklist */}
+            <div className="emi-doc-checklist-box">
+              <h4 className="checklist-heading">📄 Instant Approval Document Checklist (Showroom):</h4>
+              <div className="checklist-items">
+                <span className="doc-pill">✓ Aadhaar Card (OTP linked)</span>
+                <span className="doc-pill">✓ PAN Card</span>
+                <span className="doc-pill">✓ NetBanking / Debit Card (for NACH)</span>
+                <span className="doc-pill">✓ 18+ Years Age</span>
               </div>
             </div>
           </div>
 
+          {/* Right Column: Financial Summary Card */}
           <div className="emi-calc-right">
-            <div className="emi-summary-card">
-              <div className="emi-bank-logos">
-                <span className="bank-tag">Bajaj Finserv</span>
-                <span className="bank-tag">IDFC First</span>
-                <span className="bank-tag">HDFC Bank</span>
+            <div className="emi-summary-card emi-summary-card-v2">
+              <div className="emi-summary-top">
+                <div className="emi-bank-badge">
+                  <span className="bank-logo-icon">{activeBank.icon}</span>
+                  <div>
+                    <span className="partner-verified-label">VERIFIED FINANCE PARTNER</span>
+                    <strong className="partner-active-title">{activeBank.name}</strong>
+                  </div>
+                </div>
+                <span className="instant-badge">15-Min Spot Approval</span>
               </div>
 
-              <div className="monthly-emi-highlight">
-                <span className="emi-result-label">Your Estimated Monthly EMI</span>
-                <div className="emi-big-number">₹{monthlyEmi.toLocaleString('en-IN')}<span className="per-m">/mo</span></div>
-                <span className="zero-interest-pill">0% Extra Interest Rate</span>
-              </div>
-
-              <div className="emi-breakdown-details">
-                <div className="calc-data-row">
-                  <span>Device Value:</span>
-                  <strong>₹{devicePrice.toLocaleString('en-IN')}</strong>
+              {/* Big Monthly EMI Hero Callout */}
+              <div className="monthly-emi-highlight monthly-emi-highlight-v2">
+                <span className="emi-result-label">YOUR ESTIMATED MONTHLY INSTALLMENT</span>
+                <div className="emi-big-number">
+                  ₹{monthlyEmi.toLocaleString('en-IN')}
+                  <span className="per-m">/month</span>
                 </div>
-                <div className="calc-data-row">
-                  <span>Downpayment on Spot:</span>
-                  <strong>₹{downpaymentAmount.toLocaleString('en-IN')}</strong>
-                </div>
-                <div className="calc-data-row">
-                  <span>Tenure Duration:</span>
-                  <strong>{tenureMonths} Months</strong>
-                </div>
-                <div className="calc-data-row">
-                  <span>Paperwork Needed:</span>
-                  <strong>Aadhaar & PAN Card</strong>
+                <div className="zero-interest-pills-row">
+                  <span className="zero-interest-pill">0% Extra Interest Rate</span>
+                  <span className="zero-pf-pill">₹0 Hidden Charges</span>
                 </div>
               </div>
 
-              <a
-                href={`https://wa.me/${STORE_WHATSAPP}?text=${encodeURIComponent(`Hi SR Communication, I calculated an EMI of ₹${monthlyEmi}/mo for a ₹${devicePrice.toLocaleString('en-IN')} device on your website. Please check my eligibility for 0% EMI.`)}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn btn-whatsapp-full"
-              >
-                Apply for 0% EMI on WhatsApp →
-              </a>
+              {/* Comprehensive Financial Transparency Breakdown */}
+              <div className="emi-breakdown-details emi-breakdown-details-v2">
+                <div className="calc-data-row">
+                  <span className="data-row-label">Device Total Value:</span>
+                  <strong className="data-row-val">₹{devicePrice.toLocaleString('en-IN')}</strong>
+                </div>
+
+                <div className="calc-data-row">
+                  <span className="data-row-label">Spot Downpayment ({downpaymentPercent}%):</span>
+                  <strong className="data-row-val text-accent">
+                    {downpaymentAmount === 0 ? "₹0 (Zero Down)" : `₹${downpaymentAmount.toLocaleString('en-IN')}`}
+                  </strong>
+                </div>
+
+                <div className="calc-data-row">
+                  <span className="data-row-label">Financed Loan Principal:</span>
+                  <strong className="data-row-val">₹{loanAmount.toLocaleString('en-IN')}</strong>
+                </div>
+
+                <div className="calc-data-row">
+                  <span className="data-row-label">Tenure Duration:</span>
+                  <strong className="data-row-val">{tenureMonths} Monthly Installments</strong>
+                </div>
+
+                <div className="calc-data-row">
+                  <span className="data-row-label">Bank Interest Rate:</span>
+                  <strong className="data-row-val text-green">0% (Subvented by Brand)</strong>
+                </div>
+
+                <div className="calc-data-row highlight-savings-row">
+                  <span className="data-row-label">Standard Credit Interest Saved:</span>
+                  <strong className="data-row-val text-highlight-savings">
+                    ₹{marketInterestSaved.toLocaleString('en-IN')} SAVED
+                  </strong>
+                </div>
+
+                <div className="calc-data-row net-total-row">
+                  <span className="data-row-label">Total Amount Payable:</span>
+                  <strong className="data-row-val">₹{totalPayable.toLocaleString('en-IN')}</strong>
+                </div>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="emi-action-buttons">
+                <a
+                  href={`https://wa.me/${STORE_WHATSAPP}?text=${encodeURIComponent(waMessage)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn btn-whatsapp-full btn-emi-whatsapp"
+                >
+                  <span className="wa-icon-glow">💬</span> Apply for 0% EMI on WhatsApp →
+                </a>
+
+                <div className="emi-secondary-links">
+                  <a href={`tel:${STORE_PHONE}`} className="btn-call-desk">
+                    📞 Call Finance Desk (+91 97174 59671)
+                  </a>
+                  <Link href="/store" className="btn-visit-showroom-link">
+                    📍 Visit Showroom Directions →
+                  </Link>
+                </div>
+              </div>
 
               <p className="emi-disclaimer">
-                *Approvals subject to bank criteria. Visit SR Communication in Shalimar Garden for instant on-spot paperless processing in 15 minutes.
+                *0% EMI schemes are powered by Bajaj Finserv, IDFC First Bank, and HDFC Bank. Approvals and eligibility depend on customer bank verification. Walk into SR Communication at Shalimar Garden Ext-2 for 15-minute biometric spot disbursal.
               </p>
             </div>
           </div>
@@ -1460,6 +1693,223 @@ export function NewsletterForm() {
           </button>
         </form>
       )}
+    </div>
+  );
+}
+
+// ==========================================
+// 10. SHOWROOM VIP CONTACT INQUIRY FORM
+// ==========================================
+export function ContactForm() {
+  const [name, setName] = useState('');
+  const [phone, setPhone] = useState('');
+  const [device, setDevice] = useState('iPhone 18 Pro Max');
+  const [service, setService] = useState('0% Downpayment EMI');
+  const [notes, setNotes] = useState('');
+  const [submitted, setSubmitted] = useState(false);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!name || !phone) return;
+
+    const message = `🛍️ *VIP Showroom Inquiry - SR Communication Website:*\n\n` +
+      `• *Customer Name:* ${name}\n` +
+      `• *Mobile:* ${phone}\n` +
+      `• *Interested In:* ${device}\n` +
+      `• *Required Service:* ${service}\n` +
+      (notes ? `• *Customer Note:* ${notes}\n` : '') +
+      `\nPlease confirm current stock availability, best pricing, and available 0% EMI schemes at your Shalimar Garden showroom.`;
+
+    const url = `https://wa.me/${STORE_WHATSAPP}?text=${encodeURIComponent(message)}`;
+    window.open(url, '_blank');
+    setSubmitted(true);
+  };
+
+  return (
+    <div className="contact-form-card">
+      <div className="contact-form-header">
+        <span className="contact-form-tag">DIRECT SHOWROOM RESERVATION</span>
+        <h3 className="contact-form-title">Reserve a Device or Request a Callback</h3>
+        <p className="contact-form-sub">
+          Fill in your details below. Our showroom desk in Shalimar Garden will verify stock and prepare your 0% EMI quote immediately.
+        </p>
+      </div>
+
+      {submitted ? (
+        <div className="contact-success-banner">
+          <div className="success-icon">✓</div>
+          <h4>Inquiry Forwarded Successfully!</h4>
+          <p>
+            Your request was sent directly to our WhatsApp showroom desk. Our team will assist you within minutes during business hours (10:00 AM – 9:00 PM).
+          </p>
+          <button
+            type="button"
+            className="btn btn-outline"
+            onClick={() => {
+              setSubmitted(false);
+              setName('');
+              setPhone('');
+              setNotes('');
+            }}
+          >
+            Send Another Inquiry
+          </button>
+        </div>
+      ) : (
+        <form onSubmit={handleSubmit} className="contact-actual-form">
+          <div className="form-row-two-col">
+            <div className="form-field-group">
+              <label htmlFor="contact-name">Your Full Name *</label>
+              <input
+                id="contact-name"
+                type="text"
+                required
+                placeholder="e.g. Rahul Sharma"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="contact-input"
+              />
+            </div>
+            <div className="form-field-group">
+              <label htmlFor="contact-phone">WhatsApp / Mobile Number *</label>
+              <input
+                id="contact-phone"
+                type="tel"
+                required
+                placeholder="e.g. 98110XXXXX"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                className="contact-input"
+              />
+            </div>
+          </div>
+
+          <div className="form-row-two-col">
+            <div className="form-field-group">
+              <label htmlFor="contact-device">Device Interested In:</label>
+              <select
+                id="contact-device"
+                value={device}
+                onChange={(e) => setDevice(e.target.value)}
+                className="contact-select"
+              >
+                <option value="iPhone 18 Pro Max">Apple iPhone 18 Pro Max</option>
+                <option value="iPhone 18 Pro">Apple iPhone 18 Pro</option>
+                <option value="iPhone 17 Pro Max">Apple iPhone 17 Pro Max</option>
+                <option value="iPhone 17 Air">Apple iPhone 17 Air</option>
+                <option value="iPhone 16 Series">Apple iPhone 16 / 16 Plus / 16 Pro</option>
+                <option value="Samsung Galaxy S26 Ultra">Samsung Galaxy S26 Ultra</option>
+                <option value="Samsung Galaxy S25 Series">Samsung Galaxy S25 / S25+ / S25 Ultra</option>
+                <option value="Vivo V40 / X200 Series">Vivo V40 Pro / X200 Series</option>
+                <option value="OnePlus 13 / 12 Series">OnePlus 13 / 12 / 12R</option>
+                <option value="Nothing Phone Series">Nothing Phone (2) / Phone (2a)</option>
+                <option value="Smartwatch / Audio / Accessories">Smartwatches &amp; Earbuds</option>
+                <option value="Other / General Query">Other Device / General Inquiries</option>
+              </select>
+            </div>
+
+            <div className="form-field-group">
+              <label htmlFor="contact-service">Required Service:</label>
+              <select
+                id="contact-service"
+                value={service}
+                onChange={(e) => setService(e.target.value)}
+                className="contact-select"
+              >
+                <option value="0% Downpayment EMI">0% Downpayment &amp; EMI Scheme</option>
+                <option value="New Sealed Phone Purchase">New Sealed Phone Purchase</option>
+                <option value="Old Smartphone Exchange / Valuation">Old Phone Exchange &amp; Valuation</option>
+                <option value="Accessories, Case &amp; Tempered Glass">Accessories &amp; Free Screen Guard</option>
+                <option value="Showroom Demo &amp; Consultation">Showroom Demo &amp; In-Store Consultation</option>
+              </select>
+            </div>
+          </div>
+
+          <div className="form-field-group">
+            <label htmlFor="contact-notes">Specific Storage / Color / Questions (Optional):</label>
+            <textarea
+              id="contact-notes"
+              rows={3}
+              placeholder="e.g. Looking for 256GB Desert Titanium color. Is it ready for pickup today?"
+              value={notes}
+              onChange={(e) => setNotes(e.target.value)}
+              className="contact-textarea"
+            />
+          </div>
+
+          <div className="form-action-row">
+            <button type="submit" className="btn btn-whatsapp-full btn-contact-submit">
+              💬 Submit &amp; Chat on WhatsApp Desk →
+            </button>
+            <span className="contact-form-guarantee">
+              🔒 100% Privacy. Zero spam. Directly connected with showroom managers.
+            </span>
+          </div>
+        </form>
+      )}
+    </div>
+  );
+}
+
+// ==========================================
+// 11. CONTACT FREQUENTLY ASKED QUESTIONS
+// ==========================================
+export function ContactFaqAccordion() {
+  const [openIndex, setOpenIndex] = useState<number | null>(0);
+
+  const faqs = [
+    {
+      q: "Can I get 0% EMI approval on the spot at your Shalimar Garden showroom?",
+      a: "Yes! We have dedicated on-spot executive desks for Bajaj Finserv, IDFC First Bank, and HDFC Bank right inside our showroom. If you bring your Aadhaar Card and PAN card, paperless biometric approval typically takes only 10 to 15 minutes, allowing you to walk out with your brand-new phone immediately."
+    },
+    {
+      q: "How does the old phone trade-in / exchange process work?",
+      a: "Bring your old smartphone to our store. Our technicians perform an instant 5-minute diagnostic evaluation checking the screen, body condition, and battery health to offer you the highest market valuation in Ghaziabad. That valuation is deducted directly from your new phone's price."
+    },
+    {
+      q: "Are all phones 100% brand sealed with official Indian manufacturer warranty?",
+      a: "Absolutely 100%. Every single smartphone, tablet, and accessory sold at SR Communication is factory sealed, brand-authorized Indian stock, accompanied by a legitimate GST tax invoice. You are eligible for nationwide warranty support at any official Apple, Samsung, Vivo, or OnePlus service center."
+    },
+    {
+      q: "Can I reserve a smartphone online and pick it up at the store today?",
+      a: "Yes. Simply submit the VIP reservation form above or send a WhatsApp message to +91 97174 59671. We will hold the device in your preferred color and storage variant for same-day in-store pickup."
+    },
+    {
+      q: "Do you offer free data transfer and glass setup when purchasing a new phone?",
+      a: "Yes! Every customer purchasing a smartphone at SR Communication receives complimentary white-glove setup: full WhatsApp and contact migration from Android to iPhone (or vice versa), software updates, and precision tempered glass application free of charge."
+    }
+  ];
+
+  return (
+    <div className="contact-faq-section">
+      <div className="contact-faq-header">
+        <span className="section-eyebrow">HELPFUL INFORMATION</span>
+        <h3 className="section-title">Frequently Asked Questions</h3>
+        <p className="faq-subtitle">Everything you need to know before visiting our Shalimar Garden showroom.</p>
+      </div>
+      <div className="faq-list">
+        {faqs.map((item, idx) => {
+          const isOpen = openIndex === idx;
+          return (
+            <div key={idx} className={`faq-card ${isOpen ? 'open' : ''}`}>
+              <button
+                type="button"
+                className="faq-question-btn"
+                onClick={() => setOpenIndex(isOpen ? null : idx)}
+                aria-expanded={isOpen}
+              >
+                <span className="faq-q-text">{item.q}</span>
+                <span className="faq-chevron">{isOpen ? '▲' : '▼'}</span>
+              </button>
+              {isOpen && (
+                <div className="faq-answer-content">
+                  <p>{item.a}</p>
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
     </div>
   );
 }
